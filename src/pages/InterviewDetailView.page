@@ -1,0 +1,141 @@
+<apex:page standardStylesheets="true" 
+            showHeader="true"  
+            sidebar="false"
+            id="Page" 
+            standardController="Stakeholder_Interview__c"
+            tabStyle="Account"
+            action="{!if($Profile.Name =='SAM Group',null,urlFor($Action.Stakeholder_Interview__c.view, Stakeholder_Interview__c.id,null, true))}"> 
+<html>
+
+    <head>
+
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="{!$Resource.JsStep1}"></script> 
+        <script src="{!$Resource.JsStep2}"></script>
+        <apex:stylesheet value="{!$Resource.JsStepsCSS}"/>
+        <apex:stylesheet value="{!$Resource.JsStepsCSSMain}"/>
+        <apex:stylesheet value="{!$Resource.JsStepsCSSNorm}"/>
+        <apex:stylesheet value="/dCSS/Theme2/en/common.css"/>
+        <apex:stylesheet value="{!URLFOR($Resource.Custom_Style,'CustomStyling.css')}"/>
+     
+
+        <script>
+
+            var j$ = jQuery.noConflict();
+            j$(document).ready(function() {
+            j$("#interviewDetails-tabs").steps({
+                headerTag: "h1",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                enableFinishButton: false,
+                enablePagination: false,
+                enableAllSteps: true,
+                titleTemplate: "#title#",
+                cssClass: "tabcontrol"
+            });
+            });
+            
+        </script>
+        
+         
+    </head>
+
+
+
+    <body>
+      
+            <div id="interviewDetails-tabs" >
+            <div>
+            <Table width="80%" cellpadding="2px;" >
+                    <tr>
+                        <td>Interview Title :  <b>{!UPPER(Stakeholder_Interview__c.Name)}&nbsp;&nbsp; (<apex:outputField value="{!Stakeholder_Interview__c.cDate__c}"/>)</b>   </td>
+                    </tr>
+                    <tr width="100%">
+                            <td width="45%">Account Name :<b><apex:outputField value="{!Stakeholder_Interview__c.Account_Name__c}"/>&nbsp;&nbsp;&nbsp;&nbsp; (<apex:outputField value="{!Stakeholder_Interview__c.Contact_Name__c}"/>)
+                                
+                            </b></td>
+                            <td colspan="2" >    
+                            <button type="button" class="sf1buttonSFBlue" onclick="window.open('/apex/InterviewTempletePDF?id={!Stakeholder_Interview__c.Id}','', 'width=500, height=100');">
+                                    Generate Interview Template 
+                                </button>   
+                                <button type="button"  class="sf1buttonSFBlue"  onclick="window.open('/apex/InterviewInsight?id={!Stakeholder_Interview__c.Id}','_parent');">
+                                    Update Insights
+                                </button>   
+                            </td> 
+                    </tr>
+                </Table>                
+                </div>
+        
+                <h1>Key Questions</h1>
+                <section>
+                    <p>
+                        <div class="intDetailBody" >
+                            <apex:include pageName="SAMDisplayKeyQuestions"/>
+                        </div>
+                    </p>
+                </section>
+        
+        
+                <h1>Custom Questions</h1>
+                <section>
+                    <p>
+                        <div class="intDetailBody" >
+                            <apex:relatedList list="Custom_Questions__r" pagesize="20" />
+                        </div>
+                    </p>
+                </section>
+        
+        
+        
+
+                <h1>Attachments</h1>
+                <section>
+                    <p>
+                        <div class="intDetailBody" >
+                            <apex:relatedList list="CombinedAttachments" />
+                        </div>
+                    </p>
+                </section>
+
+        
+        
+                <h1>Stakeholder Profile</h1>
+                <section>
+                    <p>
+                        <div class="intDetailBody" >
+                            <apex:pageBlock title="{!Stakeholder_Interview__c.Profile_Type__c}">
+                                <c:SAMProfileTitles profileName="{!Stakeholder_Interview__c.Profile_Type__c}"/>
+                                <c:SAMProfileFocusAreas profileName="{!Stakeholder_Interview__c.Profile_Type__c}" />
+                                <c:SAMProfilePreMeeting profileName="{!Stakeholder_Interview__c.Profile_Type__c}"/>
+                            </apex:pageBlock>
+                        </div>
+                    </p>
+                </section>
+        
+                <h1>Information Resources</h1>
+                <section>
+                    <p>
+                        <div class="intDetailBody" >
+                            <apex:pageBlock title="{!Stakeholder_Interview__c.Profile_Type__c}">
+                                 <apex:iframe src="/apex/samprofileInfoRes?profilename={!Stakeholder_Interview__c.Profile_Type__c}" height="280px;" scrolling="false"/>
+                                <!-- c:SAMProfileInfoResources profileName="{!Stakeholder_Interview__c.Profile_Type__c}"/ -->
+                            </apex:pageBlock>
+                        </div>
+                    </p>
+                </section>
+        
+        
+        
+
+            </div>
+
+
+    </body>
+
+
+</html>
+
+</apex:page>

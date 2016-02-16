@@ -1,0 +1,26 @@
+<apex:page showHeader="false" sidebar="false"  standardStylesheets="false">
+
+            <style>
+                .activeTab {
+                background-image:none;
+                color: white;
+                background-color: #49c5b1;
+               border-right-style:none !important;
+                height:30px;
+                } 
+                .inactiveTab {background-image:none;border: 0px; background-color:#62b5e5; margin : 0; font-familty: Arial 11px; height:30px;}
+               
+             
+              </style>
+ 
+  <div style="border-spacing: 0px;">
+      
+   <apex:tabPanel switchType="client" selectedTab="name2" id="AccountTabPanel"
+        tabClass="activeTab" inactiveTabClass="inactiveTab">
+        <apex:tab label="One" name="name1" id="tabOne">content for tab one666666666</apex:tab>
+        <apex:tab label="Two" name="name2" id="tab2" >content for tab two</apex:tab>
+        <apex:tab label="Two2" name="name3" id="tab3">content for tab two</apex:tab>
+        <apex:tab label="Two3" name="name4" id="tab4">content for tab two</apex:tab>
+    </apex:tabPanel>
+    </div>          
+  </apex:page>

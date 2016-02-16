@@ -1,0 +1,117 @@
+<apex:page controller="SamProfileInfoRes_Controller" showHeader="false" sidebar="false">
+    <apex:form id="form">
+        <div style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; font-weight:bold; padding-bottom:5px;">
+            Information Resources
+        </div> 
+        
+        <div> 
+            
+            <table width="100%">
+                <tr width="100%">
+                    
+                    <!--  --------------------------------- Section A (top-left) -------------------------  -->
+                    
+                    <td style="vertical-align: text-top; width:50%">
+                        <h2>{!titleA}</h2> 
+                        <ul>
+                            <apex:repeat value="{!listAll['A']}" var="lA">
+                                <li>
+                                    <apex:outputPanel id="sectionA">
+                                        <apex:commandLink style="color:blue;"
+                                                          action="{!CountLinkClicks}"  
+                                                          title="{!lA.Link__c}" 
+                                                          onclick="window.open('{!lA.Link__c}');"
+                                                          rendered="{!lA.Link__c !=''}" 
+                                                          reRender="sectionA">
+                                            <apex:param name="linkName"
+                                                        value="{!lA.Link__c}"
+                                                        assignTo="{!linkName}"/> 
+                                            {!lA.Title__c}
+                                        </apex:commandLink>
+                                        <apex:outputText value="{!lA.Title__c + lA.SubTitle__c}" 
+                                                         rendered="{!lA.Link__c ==''}"/>
+                                    </apex:outputPanel>    
+                                </li> 
+                            </apex:repeat>
+                        </ul>
+                    </td>        
+                    
+                    <!--  --------------------------------- Section B (top-right) -------------------------  -->
+                    
+                    <td style="vertical-align: text-top; width:50%">
+                        <h2>{!titleB}</h2> 
+                        <ul>
+                            <apex:repeat value="{!listAll['B']}" var="lB">
+                                <li>
+                                    <apex:outputPanel id="sectionB">
+                                        <apex:commandLink style="color:blue;"
+                                                          action="{!CountLinkClicks}"  
+                                                          title="{!lB.Link__c}" 
+                                                          onclick="window.open('{!lB.Link__c}');"
+                                                          rendered="{!lB.Link__c !=''}" 
+                                                          reRender="sectionB">
+                                            <apex:param name="linkName"
+                                                        value="{!lB.Link__c}"
+                                                        assignTo="{!linkName}"/> 
+                                            {!lB.Title__c}
+                                        </apex:commandLink>
+                                        <apex:outputText value="{!lB.Title__c + lB.SubTitle__c}" 
+                                                         rendered="{!lB.Link__c ==''}"/>
+                                    </apex:outputPanel>    
+                                </li> 
+                            </apex:repeat>
+                        </ul>
+                    </td>
+                    
+                    
+                </tr>                                
+            </table>
+        </div>  
+        <br/>
+        
+        <!--  --------------------------------- Section C (bottom-left) -------------------------  -->
+        
+        <div style="padding-left:20px;">
+            <h2>{!titleC}</h2> 
+            <apex:repeat value="{!docIds}" var="i">
+                
+                <apex:outputPanel id="sectionDoc" style="padding-top:3px;">
+                    <apex:commandLink style="color:blue;"
+                                      action="{!CountDocClicks}"  
+                                      title="{!i.Title}" 
+                                      onclick="window.open('/{!i.id}');"
+                                      reRender="sectionDoc">
+                        <apex:param name="linkName"
+                                    value="{!i.Title}"
+                                    assignTo="{!linkName}"/> 
+                        {!i.Title}
+                    </apex:commandLink>         
+                    &nbsp;
+                    <apex:image url="{!$Resource.PdfIcon}" 
+                                width="12" 
+                                height="12" 
+                                title="{!i.Title}" />
+                    <!-- /div -->
+                </apex:outputPanel> <br/>
+            </apex:repeat>
+            <apex:repeat value="{!listAll['C']}" var="lC" >
+                <apex:outputPanel id="sectionC">
+                    <apex:commandLink style="color:blue;"
+                                      action="{!CountLinkClicks}"  
+                                      title="{!lC.Link__c}" 
+                                      onclick="window.open('{!lC.Link__c}');"
+                                      rendered="{!lC.Link__c !=''}" 
+                                      reRender="sectionC">
+                        <apex:param name="linkName"
+                                    value="{!lC.Link__c}"
+                                    assignTo="{!linkName}"/> 
+                        {!lC.Title__c}
+                    </apex:commandLink>
+                    <apex:outputText value="{!lC.Title__c + lC.SubTitle__c}" 
+                                     rendered="{!lC.Link__c ==''}"/>
+                </apex:outputPanel>    <br/>
+            </apex:repeat>
+        </div>  
+        <br/>
+    </apex:form>
+</apex:page>

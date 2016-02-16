@@ -1,0 +1,20 @@
+<apex:page standardController="AccountQI__c" standardStylesheets="false" extensions="tst1Controller" >
+     <!-- apex:relatedList list="RelatedContentDistributionList" >
+            <apex:facet name="header" >
+                 <apex:outputPanel style="color:Green">
+                    <h3>{!AccountQI__c.recordtype.name}</h3>
+                 </apex:outputPanel>   
+            </apex:facet>
+     </apex:relatedList -->
+     <apex:form >
+     <apex:repeat value="{!cd}" var="c"> 
+         <apex:outputLink value="{!c.DistributionPublicUrl}" 
+                           target="_blank" 
+                           style="color:#0000EE;padding-right:40px" >
+                          <apex:image url="{!$Resource.FileImage}" width="25" height="25" title="{!c.Name}"  />   
+                          {!c.Name}
+               </apex:outputLink>  
+     </apex:repeat>
+             
+     </apex:form>
+ </apex:page>

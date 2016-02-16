@@ -1,0 +1,3 @@
+<apex:page sidebar="false" action="{!if($Profile.Name =='SAM Group','/001?fcf=00B1300000AKBRj',urlFor($Action.Account.Tab, $ObjectType.Account,null, true))}" tabStyle="Account" >
+
+</apex:page>

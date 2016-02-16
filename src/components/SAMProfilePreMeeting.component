@@ -1,0 +1,172 @@
+<apex:component >
+    <apex:attribute name="profileName" 
+                    description="This is the value for the profile name"
+                    type="String" 
+                    required="true">
+    </apex:attribute>
+    
+    
+    <div style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; font-weight:bold; padding-bottom:5px;">
+        Pre-Meeting Considerations
+    </div> 
+    
+    <apex:pageBlockSection columns="1"     collapsible="false">
+        <apex:outputPanel rendered="{!profileName == $Label.SamACO}">
+            <div  > 
+                <ul>
+                    <li>How long in the position and backtround ? </li>
+                    <li>Are specialists in ACO or just PCPs ? </li>
+                    <li>How long is contract with managed care company ? </li>
+                    <li>ID interest areas driven by payer and by hospital for ACO to identified in press or in annual report</li>
+                </ul>
+            </div>
+        </apex:outputPanel> 
+        <apex:outputPanel rendered="{!profileName == $Label.SamMedDir}">
+            <div  > 
+                <ul>
+                    <li>What is area of responsibility?</li>
+                    <li>Is he/she responsible for the surgery business?</li> 
+                    <li>Involvement in CMS metrics and reporting?</li>
+                    <li>Who/what departments report to him/her?</li>
+                    <li>Any community involvement </li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamInfControl}">
+            <div  > 
+                <ul>
+                    <li>Hospital reports on infections and quality metrics, any patient incidents</li> 
+                    <li> Stakeholder background, experiences.</li> 
+                    <li> Metropolitan Service Area information that id's share for all hospitals,payer mix,large employers.</li>
+                    <li> General knowledge of the key issues for a given metropolitan area such as loss of major employer, shifting demographics, hospital consolidation.</li>
+                    <li> Patient Demographic Info/payer mix/unemployment rates regionally /payer mix. </li>
+                    <li> Hospital Acquired Conditions (HAC) and Readmission (RAC penalties). </li>
+                    <li> Familiarity with standards of care such as (Surgical Care Improvement Measures) SCIP.</li> 
+                    <li> Publicly available information that the hospital/system is marketing, promoting. </li>
+                    <li> Key performance indicators/business Metrics. </li>
+                    <li> Strategic supplier partnerships. </li>
+                    <li> Trends on Surgical Site Infection (SSI) and Central Blood Stream Acquired Infection (CLABSI) rates /Hospital Acquired Conditions (HAC) and Readmission (RAC penalties) penalty.</li>
+                    <li> Strategic initiatives. </li>
+                    <li> Use of hospital benchmarking. </li> 
+                    <li> General hospital priorities or focus areas.</li> 
+                    <li> Known affiliations/ownership stakes with medical groups, alternate sites of care, clinics, surgery centers.</li> 
+                    <li> Information on strategic interactions with patients, staff, or visitors. </li>
+                    <li> Functional priorities.</li>
+                    <li> Trends on Surgical Site Infection (SSI) and Central Blood Stream Acquired Infection (CLABSI) rates /Hospital Acquired Conditions (HAC) and Readmission (RAC penalties) penalty.</li> 
+                    <li> Payor Mix</li> 
+                </ul>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamManagedMrkt}">
+            <div  > 
+                <ul>
+                    <li>What is hospital philosophy about payers?</li>
+                    <li>Hard negotiators? </li>
+                    <li>Network members? </li>
+                    <li>Employer relationships?</li>
+                    <li>ACO rates? </li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamPopHealth}">
+            <div  > 
+                <ul>
+                    <li>What is the health of the population that hospital serves ? </li>
+                    <li>Identify any key initiatives of the stakeholders in the region</li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamQuality}">
+            <div  > 
+                <ul>
+                    <li>What quality initiatives or results do they highlight on their website?</li>
+                    <li>What are their Pay for Performance metrics?</li>
+                    <li>What is their organizational structure?  Does Quality report into Nursing , Medical Office, or the CEO?</li>
+                </ul>
+                <br/>
+                <b> Good to Know :  </b> <br/>
+                <div style="padding-left: 25pt;">
+                    <ul>
+                        <li>Many CQOs and other health care quality executives are clinicians by training. </li>
+                        <li>In addition to having an understanding of clinical quality, a number of CQOs are Six Sigma black belts or lean experts. </li> 
+                        <li>CQOs also likely hold Certified Professional in Healthcare Quality (CPHQ) designation.  </li>
+          
+                    </ul>   
+                </div>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName ==  $Label.SamNursing}">
+            <div  > 
+                <ul>
+                    <li>What is area of responsibility? </li>
+                    <li>Is he/she responsible for the surgery business? </li>
+                    <li>Who/what departments report to him/her? </li>
+                    <li>Background?</li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamPerioperative}">
+            <div  > 
+                <ul>
+                    <li>Hospital Acquired Conditions (HAC) and Readmission (RAC) penalties for the area and/or the account</li> 
+                    <li>Standards of Care for the facility ex. SCIP (Surgical Care Improvement Measures)</li>
+                    <li>Joint Commission on Accreditation of Hospital Organization (JCAHO) requirements</li>
+                    <li>Reported Infection Rates – Surgical Site (SSI)</li>
+                </ul>
+                <div style="padding-left:20pt;font-size:12px;">
+                    <p><b>Example - </b>The Executive Director, Perioperative Services Strategic and Operational Leadership for the
+                        development of the Perioperative services so that a full continuum of services is created and structured in
+                        response to customer needs (patient, payer and physician). The Executive Director maintains expertise in
+                        program and financial aspects of Perioperative services, including Pre Anesthesia, Pre-Operative, Operating
+                        Room, PACU, Sterile Processing, and GI Lab. The Executive Director will guide the development of the overall
+                        leadership structure and strategic plan, quality, and create goals and plans for growth for the service line.
+                        Responsible for the overall administration of Perioperative programs in accordance with accepted national
+                        standards, federal and state laws as well as hospital and departmental policies. Directs and provides oversight for
+                        all activities for the Department of Perioperative Services which includes staffing and resource utilization.
+                        Develops and implements budgets, policies, planning, technical operations, and equipment acquisition.
+                        Participates in monitoring compliance with State and Federal regulations as well as JCAHO standards.</p>
+                </div>  
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamSurgeon}">
+            <div  > 
+                <ul>
+                    <li>Title </li>
+                    <li>Specialty </li>
+                    <li>Responsibility </li>
+                    <li>Bckground/training </li>
+                    <li>Career/practice goals </li>
+                    <li>Private practice or Hospital employee</li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+         <apex:outputPanel rendered="{!profileName == $Label.SamHealthCare}">
+            <div>
+                Sorry ... Premeeting considerations are not defined for this stakeholder type !!!	
+            </div>									
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!profileName == $Label.SamPatientExp}">
+            <div  > 
+                <ul>
+                    <li> Stakeholder background, experiences.</li> 
+                    <li> Metropolitan Service Area information that id's share for all hospitals,payer mix,large employers.</li>
+                    <li> General knowledge of the key issues for a given metropolitan area such as loss of major employer, shifting demographics, hospital consolidation.</li>
+                    <li> Patient Demographic Info/payer mix/unemployment rates regionally /payer mix. </li>
+                    <li> Publicly available information that the hospital/system is marketing, promoting. </li>
+                    <li> Key performance indicators/business Metrics. </li>
+                    <li> Strategic supplier partnerships. </li>
+                    <li> Patient Satisfaction Scores.</li>
+                    <li> Strategic initiatives. </li>
+                    <li> Use of hospital benchmarking. </li> 
+                    <li> General hospital priorities or focus areas.</li> 
+                    <li> Known affiliations/ownership stakes with medical groups, alternate sites of care, clinics, surgery centers.</li> 
+                    <li> Information on strategic interactions with patients, staff, or visitors. </li>
+                    <li> Trends on Surgical Site Infection (SSI) and Central Blood Stream Acquired Infection (CLABSI) rates /Hospital Acquired Conditions (HAC) and Readmission (RAC penalties) penalty.</li>
+                </ul>    
+            </div>
+        </apex:outputPanel>
+    </apex:pageBlockSection>  
+    
+    
+</apex:component>

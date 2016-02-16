@@ -1,0 +1,283 @@
+<apex:page standardStylesheets="true"  standardController="Stakeholder_Interview__c"
+            showHeader="true"  sidebar="false"
+            extensions="CompAccountNewOverride_Controller" 
+            id="Page" 
+            tabstyle="Account"> 
+<html>
+
+    <head>
+
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="{!$Resource.JsStep1}"></script> 
+        <script src="{!$Resource.JsStep2}"></script>
+        <apex:stylesheet value="{!$Resource.JsStepsCSS}"/>
+        <apex:stylesheet value="{!$Resource.JsStepsCSSMain}"/>
+        <apex:stylesheet value="{!$Resource.JsStepsCSSNorm}"/>
+        <apex:stylesheet value="/dCSS/Theme2/en/common.css"/>
+     
+
+        <script>
+
+            var j$ = jQuery.noConflict();
+             
+            j$(document).ready(function() {
+                 
+                j$("#example-basic").steps({
+                    headerTag: "h3",
+                    bodyTag: "section",
+                    transitionEffect: "fade",
+                    transitionEffectSpeed: "200",
+                    stepsOrientation: "vertical",
+                    enableCancelButton: true,
+                    onStepChanging: function (event, currentIndex, newIndex)
+                    {
+                     var dt = j$("input[id$='cDate']");
+                       if(newIndex == 1 && dt.val() ==''  ){
+                          dt.css({'backgroundColor':'red'});
+                          dt.css({'color':'white'});
+                          alert(' Interview Date is required');
+                         return false;
+                       }else{
+                          dt.css({'color':''});
+                          dt.css({'backgroundColor':''});
+                          selectProfile();
+                          return true;
+                       }  
+                         
+                    },
+                   labels: {
+                        finish: "Create Interview"
+                    },
+                    onFinished: function (event, currentIndex)
+                    {
+                        doSave();
+                    },
+                    onCanceled: function (event)
+                    {
+                        doCancel();
+                    }
+                    
+                });
+ 
+         });
+            
+        </script>
+        
+        <script type="text/javascript"> 
+            function openLookup(baseURL, width, modified, searchParam){
+                var originalbaseURL = baseURL;
+                var originalwidth = width;
+                var originalmodified = modified;
+                var originalsearchParam = searchParam;
+                var aid = "{!Stakeholder_Interview__c.Account_Name__c}";
+                var lookupType = "003";  
+                
+                // baseURL.substr(baseURL.length-3, 3);
+                if (modified == '1') baseURL = baseURL + searchParam;
+            
+                var isCustomLookup = false;
+                // Following "003" is the lookup type for Contact object so change this as per your standard or custom object
+                if(lookupType == "003"){
+            
+                var urlArr = baseURL.split("&");
+                var txtId = '';
+                
+                if(urlArr.length > 2) {
+                    urlArr = urlArr[1].split('=');
+                    txtId = urlArr[1];
+                }
+            
+                // Following is the url of Custom Lookup page. You need to change that accordingly
+                baseURL = "/apex/ContactCustomLookup?txt=" + txtId;
+               
+                // Following is the id of apex:form control "myForm". You need to change that accordingly
+                baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+                if (modified == '1') {
+                    baseURL = baseURL + "&lksearch=" + searchParam;
+                }
+                baseURL = baseURL + "&aid="+aid;
+                // Following is the ID of inputField that is the lookup to be customized as custom lookup
+                  
+                if(txtId.indexOf('Contact') > -1 ){
+                    isCustomLookup = true;
+                }
+            }
+            
+            
+            if(isCustomLookup == true){
+                openPopup(baseURL, "lookup", 350, 480, "width="+width+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+            }else {
+                if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+                    openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+                } 
+            }
+            
+        </script> 
+        
+    </head>
+
+
+
+    <body>
+        <style>
+                .pbTitle {
+                    white-space: nowrap
+                }
+               .intStepsBody {
+                layout:block;
+                overflow:auto;
+                width:100%;
+                height:100%;
+                font-size:1em;
+                }
+            
+                .sf1input, .sf1textarea{
+                width:50%;
+                font-family: 'Arial,Helvetica';
+                font-size: 12px;
+                color: #3c3d3e;
+                padding: 0px 0px;
+                line-height: 20px;
+                border: 1px solid #cfd0d2;
+                border-radius: 5px;
+                background-color: #e8eaeb;
+                box-shadow: inset 0 2px 2px rgba(0,0,0,.07);
+                margin:2px 2px 2px 2px;
+                }
+                 
+                .sf1input:focus, .sf1textarea:focus {
+                border: 1px solid #bbc0c4;
+                background-color: #fff;
+                outline-style: none;
+                }
+                .sf1label {
+                font-family: 'Arial,Helvetica,sans-serif';
+                font-size: 13px;
+                color: #696e71;
+                margin: 0;
+                padding-bottom: 0px;
+                display: block;
+                min-width: 100px;
+                }
+                
+                
+                a:hover {background:#ffffff; text-decoration:none;} /*BG color is a must for IE6*/
+                a.tooltip span {display:none; padding:2px 3px; margin-left:8px; width:630px; }  
+                a.tooltip:hover span{display:inline; position:absolute; background: rgb(255,255,255);  border:1px solid #cccccc; color:#6c6c6c;}
+                .profName {font-weight: bold;}
+        </style>
+    
+       
+           <apex:sectionHeader title="Stakeholder Interview Pre-work" />
+ <apex:form id="form">
+            <div id="example-basic">
+        
+
+                <h3>Interview Details</h3>
+                <section>
+                    <p>
+         
+                        <div style="float: right;">
+                            <apex:commandLink action="{!save}" styleClass="sf1label"
+                                              value="Skip Information & Build Interview Now"  />
+                        </div>                      
+                        <div>
+
+                        <apex:actionFunction name="doCancel" action="{!Cancel}"/>
+                        <apex:actionFunction name="doSave" action="{!Save}"/>
+                        <apex:actionFunction name="selectProfile" action="{!selectProfile}" reRender="pTitle,pFocus,pPreMeet,pInfo" />
+                        </div>
+                        <!-- apex:PageBlock id="PageBlock" >        
+                            <apex:pageBlockSection columns="1"   collapsible="false" -->
+                            <div style="padding-left:50px; padding-top:30px;">   
+                                <apex:outputPanel >
+                                    <b class="sf1label">Select Stakeholder Type &nbsp;<c:ToolTip /></b>
+                                      
+                                     <apex:inputField styleClass="sf1input" value="{!Stakeholder_Interview__c.Profile_Type__c}" required="true"  >
+                                     
+                                         <apex:actionSupport event="onchange" action="{!selectProfile}" reRender="pTitle,pFocus,pPreMeet,pInfo" />
+                                     </apex:inputField>
+                                </apex:outputPanel><br/>
+                                <b class="sf1label">Account</b><apex:outputField styleClass="sf1input"  id="account" value="{!Stakeholder_Interview__c.Account_Name__c}"  /><br/><br/>
+                                <b class="sf1label">Contact</b> <apex:inputField styleClass="sf1input" id="Contact" value="{!Stakeholder_Interview__c.Contact_Name__c}"  /> <br/><br/>
+                                <!--b class="sf1label">Interview Title</b><apex:inputField styleClass="sf1input" id="iTitle"  value="{!Stakeholder_Interview__c.Name}"   /> <br/ -->
+                                <b class="sf1label">Interview Date</b> <apex:inputField styleClass="sf1input" id="cDate" value="{!Stakeholder_Interview__c.cDate__c}"  />
+                             </div>   
+                            <!--/apex:pageBlockSection>
+                        </apex:PageBlock -->   
+                                       </p>
+                </section>
+                
+
+        
+        
+        
+        
+        
+                <h3>Potential Other Titles</h3>
+                <section>
+                    <p>
+                        <apex:pageBlock title="{!rTypeName}" id="pTitle">
+                            <c:SAMProfileTitles profileName="{!rTypeName}" />
+                        </apex:pageBlock>
+                    </p>
+                </section>
+        
+        
+        
+                <h3>Focus Areas</h3>
+                <section>
+                    <p>
+                        <div class="intStepsBody">          
+                            <apex:pageBlock title="{!rTypeName}" id="pFocus">
+                                
+                                <c:SAMProfileFocusAreas profileName="{!rTypeName}" />
+                                
+                            </apex:pageBlock>
+                        </div>
+                    </p>
+                </section>
+        
+        
+        
+        
+                <h3>Pre-meeting Considerations</h3>
+                <section>
+                    <p>
+                        <div class="intStepsBody">          
+                        <apex:pageBlock title="{!rTypeName}" id="pPreMeet">
+                            <c:SAMProfilePreMeeting profileName="{!rTypeName}" />
+                        </apex:pageBlock>
+                        </div>
+                    </p>
+                </section>
+
+                <h3>Information Resources</h3>
+                <section>
+                    <p>
+                        
+                        <div class="intStepsBody">          
+                        <apex:pageBlock title="{!rTypeName}" id="pInfo">
+                            <apex:iframe src="/apex/samprofileInfoRes?profilename={!rTypeName}" height="280px;" scrolling="false"/>
+                            <!-- c:SAMProfileInfoResources profileName="{!rTypeName}"  / -->
+                        </apex:pageBlock>
+                        </div>
+                            
+                    </p>
+                </section>
+
+
+
+            </div>
+</apex:form>
+
+
+    </body>
+
+
+</html>
+
+</apex:page>

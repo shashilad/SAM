@@ -1,0 +1,465 @@
+<apex:page standardController="account"  extensions="PieChartRemoteController1"  readOnly="true"  standardStylesheets="true" showHeader="false" tabStyle="account" >
+ <style>
+     .drpBox select {
+		border: 0 !important;  /*Removes border*/
+		-webkit-appearance: none;  /*Removes default chrome and safari style*/
+		-moz-appearance: none; /* Removes Default Firefox style*/
+		background: #0088cc url(img/select-arrow.png) no-repeat 90% center;
+		width: 100px; /*Width of select dropdown to give space for arrow image*/
+		text-indent: 0.01px; /* Removes default arrow from firefox*/
+		text-overflow: "";  /*Removes default arrow from firefox*/ /*My custom style for fonts*/
+		color: #FFF;
+		border-radius: 15px;
+		padding: 5px;
+		box-shadow: inset 0 0 5px rgba(000,000,000, 0.5);
+	}
+ </style>
+<script>
+        Visualforce.remoting.timeout = 120000;
+        function retrieveChartData(callback) {
+            var w = document.getElementById('inputTxt').value;
+            var mG = document.getElementById('mGrp').value;
+            var mjG = document.getElementById('mjrGrp').value;
+            var mnG = document.getElementById('mnrGrp').value;
+            var prd = document.getElementById('prod').value;
+            var sYr = document.getElementById('sYear').value;
+            var eYr = document.getElementById('eYear').value;
+            var sMn = document.getElementById('sMonth').value;
+            var eMn = document.getElementById('eMonth').value;
+            var aId = document.getElementById('{!$Component.form.aId}').value;
+            console.log(aId);
+            Visualforce.remoting.Manager.invokeAction(
+               '{!$RemoteAction.PieChartRemoteController1.getRemotePieData}',
+               w,mG,mjG,mnG,prd,sYr,eYr,aId,sMn,eMn,
+               function(result, event) {
+                   if(event.status && result && (result.constructor === Array)) {
+                       callback(result);
+                         RemotingPieChart.show();
+              
+                    var table = document.getElementById("grpDataTable");
+                    //or use :  var table = document.all.tableid;
+                    for(var i = table.rows.length - 1; i > 0; i--)
+                    {
+                        table.deleteRow(i);
+                    }
+                    var tr, td;
+                    tbody = document.getElementById("matchData");
+                    // loop through data source
+                    for (var i = 0; i < result.length; i++) {
+                        tr = tbody.insertRow(tbody.rows.length);
+                        td = tr.insertCell(tr.cells.length);
+                        td.setAttribute("align", "left");
+                      //  tr.setAttribute('ondblclick', "alert(document.getElementById('gName').value);");
+                        td.innerHTML = result[i].name.split("*")[0];
+                        td = tr.insertCell(tr.cells.length);
+                        td.setAttribute("align", "right");
+                        td.innerHTML = '$ '+result[i].data;
+                        td = tr.insertCell(tr.cells.length);
+                        td.setAttribute("align", "right");
+                        td.innerHTML = result[i].qty;
+                    }
+
+            } else if (event.type === 'exception') {
+                   document.getElementById("remoteResponseErrors").innerHTML = event.message +
+                       '<br/>' + event.where;
+               }
+               else {
+                   document.getElementById("remoteResponseErrors").innerHTML = event.message;
+               }                   
+            },
+               { escape: true }
+            );
+       }
+        function refreshRemoteChart() {
+           var statusElement = document.getElementById('statusDisplay');
+           statusElement.innerHTML = "Loading...";
+           retrieveLineChartData(function(statusElement){
+                        return function(data){
+                            RemotingLineChart.reload(data);
+                            statusElement.innerHTML = '';
+                        };
+           }(statusElement)
+            );
+           retrieveChartData(function(statusElement){
+                        return function(data){
+                            RemotingPieChart.reload(data);
+                            statusElement.innerHTML = '';
+                        };
+           }(statusElement)
+            );
+        }
+        function renderChartTip(klass, item) {
+            var m = item.storeItem;
+            var spl = m.get('name').split("*");
+            var nm = spl[0];
+            var am = m.get('data');
+            var qt = m.get('qty');
+            this.update(''
+                    + '<table>'
+                    + '<tr style="font-family:arial;font-weight:bold;font-size:12px; text-align:left"><td><b>&nbsp;</td><td>' + nm + '</b></td></tr>'
+                    + '<tr style="font-family:arial;font-size:12px;text-align:right;"><td>&nbsp;</td><td>' +'$'+ am +' ( ' +spl[1]+'% )' + '</td></tr>'
+                    + '<tr style="font-family:arial;font-size:12px;text-align:right;"><td>&nbsp;</td><td>' + qt +' ( ' +spl[2]+'% )' + '</td></tr>'
+                     + '</table>'
+                    );
+            var e = window.event;
+            var t = e.target || e.srcElement;
+             t.onclick=function(event){
+                if(document.getElementById("inputTxt").value == "Two"){
+                    document.getElementById('prod').value = nm;
+                    document.getElementById('mnrGrp').value = nm;
+                    document.getElementById("inputTxt").value = 'ProdList';
+                }
+        //      if(document.getElementById("inputTxt").value == "Two"){
+          //     document.getElementById('mnrGrp').value = nm;
+            //    document.getElementById("inputTxt").value = 'Three';
+               
+             // }
+                if(document.getElementById("inputTxt").value == "One"){
+                    document.getElementById('mjrGrp').value = nm;
+                    document.getElementById("inputTxt").value = 'Two';
+                }
+                if(document.getElementById("inputTxt").value == ""){
+                    document.getElementById('mGrp').value = nm;
+                    document.getElementById("inputTxt").value = 'One';
+                }
+                refreshRemoteChart();
+            };        
+         }
+        function renderLineTip(klass, item) {
+            var m = item.storeItem;
+            nm = m.get('name');
+            var nm_month = parseInt(nm.substr(0,2));
+            var monthAry = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; 
+            var nm_year = nm.substr(3,6);
+            var qt = m.get('data');
+            this.update(''
+                    + '<table>'
+                    + '<tr style="font-family:arial;font-weight:bold;font-size:15px;"><td><b>&nbsp;</td><td>' + monthAry[nm_month] +' '+nm_year + '</b></td></tr>'
+                    + '<tr style="font-family:arial;font-weight:bold;font-size:14px;text-align:center;"><td>&nbsp;</td><td>' + qt + '</td></tr>'
+                    + '</table>'
+                    );
+        }   
+        function refreshRemoteChartBack() {
+            if(document.getElementById("inputTxt").value == "One"){
+                document.getElementById('mGrp').value = '';
+                document.getElementById("inputTxt").value = '';
+            }
+            if(document.getElementById("inputTxt").value == "Two"){
+                document.getElementById('mjrGrp').value = '';
+                document.getElementById("inputTxt").value = 'One';
+            }
+            if(document.getElementById("inputTxt").value == "Three"){
+                document.getElementById('mnrGrp').value = '';
+                document.getElementById("inputTxt").value = 'Two';
+            }
+            if(document.getElementById("inputTxt").value == "ProdList"){
+                document.getElementById('mnrGrp').value = '';
+                document.getElementById('prod').value = '';
+                document.getElementById("inputTxt").value = 'Two';
+            }
+            refreshRemoteChart();
+            }
+        function retrieveLineChartData(callback) {
+            var w = document.getElementById('inputTxt').value;
+            var mG = document.getElementById('mGrp').value;
+            var mjG = document.getElementById('mjrGrp').value;
+            var mnG = document.getElementById('mnrGrp').value;
+            var prd = document.getElementById('prod').value;
+            var sYr = document.getElementById('sYear').value;
+            var eYr = document.getElementById('eYear').value;
+            var eMn = document.getElementById('eMonth').value;
+            var sMn = document.getElementById('sMonth').value;
+            var aId = document.getElementById('{!$Component.form.aId}').value;
+             Visualforce.remoting.Manager.invokeAction(
+               '{!$RemoteAction.PieChartRemoteController1.getRemoteLineData}',
+               w,mG,mjG,mnG,prd,sYr,eYr,aId,sMn,eMn,
+               function(result, event) {
+                   if(event.status && result && (result.constructor === Array)) {
+                       callback(result);
+                       RemotingLineChart.show();
+
+                    var table = document.getElementById("grpLineDataTable");
+                    //or use :  var table = document.all.tableid;
+                    for(var i = table.rows.length - 1; i > 0; i--)
+                    {
+                        table.deleteRow(i);
+                    }
+                    var tr, td;
+                    tbody = document.getElementById("matchLineData");
+                    // loop through data source
+                    for (var i = 0; i < result.length; i++) {
+                        tr = tbody.insertRow(tbody.rows.length);
+                        td = tr.insertCell(tr.cells.length);
+                        td.setAttribute("align", "left");
+                      //  tr.setAttribute('ondblclick', "alert(document.getElementById('gName').value);");
+                        td.innerHTML = result[i].name;
+                        td = tr.insertCell(tr.cells.length);
+                        td.setAttribute("align", "right");
+                        td.innerHTML = '$ '+ result[i].data;
+                        td = tr.insertCell(tr.cells.length);
+                        td.setAttribute("align", "right");
+                        td.innerHTML = result[i].qty;
+                    }
+
+            } else if (event.type === 'exception') {
+                   document.getElementById("remoteResponseErrors").innerHTML = event.message +
+                       '<br/>' + event.where;
+               }
+               else {
+                   document.getElementById("remoteResponseErrors").innerHTML = event.message;
+               }                   
+            },
+               { escape: true }
+            );
+       }
+        function renderPieChartLable(klass, item){
+            var lbl = klass.split("*");
+            if (parseInt(lbl[1]) <2){
+                return ' ';
+            }
+            return lbl[0];
+        }
+        function renderPieChartLableQty(klass, item){
+            var lbl = klass.split("*");
+      //      alert(lbl[2]);
+            if (parseInt(lbl[2]) <2){
+                return ' ';
+            }
+            return lbl[0];
+        }
+</script>
+    
+   
+<apex:form id="form" >
+    <apex:inputHidden id="aId" value="{!accId}"/> 
+    <span id="remoteResponseErrors"></span> 
+    <apex:pageBlock id="cht">
+        <apex:outputPanel id="buttonBlk">
+            <button type="button"  onClick="refreshRemoteChartBack();" 
+                        style="background-image:none;-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;box-shadow:inset 0px 1px 0px 0px #97c4fe;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));  
+                        background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%); background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);   background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);    
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);   
+                        background-color:#3d94f6;   -moz-border-radius:6px; -webkit-border-radius:6px;  border-radius:6px;  border:1px solid #337fed;   
+                        display:inline-block;   cursor:pointer; color:#ffffff;  font-family:arial;  font-size:15px; font-weight:bold;   padding:6px 24px;   
+                        text-decoration:none;   text-shadow:0px 1px 0px #1570cd;"> Back </button>
+            <apex:commandButton value="View Grid" styleClass="buttonStyle" 
+                        style="background-image:none;-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;box-shadow:inset 0px 1px 0px 0px #97c4fe;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));  
+                        background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%); background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);   background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);    
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);   
+                        background-color:#3d94f6;   -moz-border-radius:6px; -webkit-border-radius:6px;  border-radius:6px;  border:1px solid #337fed;   
+                        display:inline-block;   cursor:pointer; color:#ffffff;  font-family:arial;  font-size:15px; font-weight:bold;   padding:6px 24px;   
+                        text-decoration:none;   text-shadow:0px 1px 0px #1570cd;"
+                        action="{!ListData}" 
+                        reRender="pieChart,buttonBlk" 
+                        rendered="{!!showData}"/>
+            <apex:commandButton value="View Chart" styleClass="buttonStyle" 
+                        style="background-image:none;-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;box-shadow:inset 0px 1px 0px 0px #97c4fe;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));  
+                        background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%); background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);   background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);    
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);   
+                        background-color:#3d94f6;   -moz-border-radius:6px; -webkit-border-radius:6px;  border-radius:6px;  border:1px solid #337fed;   
+                        display:inline-block;   cursor:pointer; color:#ffffff;  font-family:arial;  font-size:15px; font-weight:bold;   padding:6px 24px;   
+                        text-decoration:none;   text-shadow:0px 1px 0px #1570cd;"
+                        action="{!ChartData}" 
+                        reRender="pieChart,buttonBlk" 
+                        rendered="{!showData}"/>
+                <apex:outputPanel id="nBlk" style="padding-left:1px;">
+                   <apex:commandButton value="View Quantity" styleClass="buttonStyle" 
+                        style="background-image:none;-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;box-shadow:inset 0px 1px 0px 0px #97c4fe;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));  
+                        background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%); background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);   background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);    
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);   
+                        background-color:#3d94f6;   -moz-border-radius:6px; -webkit-border-radius:6px;  border-radius:6px;  border:1px solid #337fed;   
+                        display:inline-block;   cursor:pointer; color:#ffffff;  font-family:arial;  font-size:15px; font-weight:bold;   padding:6px 24px;   
+                        text-decoration:none;   text-shadow:0px 1px 0px #1570cd;"
+                        action="{!changeChartQty}" 
+                        reRender="pieChart,LineChartData,buttonBlk" 
+                        rendered="{!!disButton}"/> 
+                    <apex:commandButton value="View Amount" styleClass="buttonStyle" 
+                        style="background-image:none;-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;box-shadow:inset 0px 1px 0px 0px #97c4fe;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));  
+                        background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%); background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);   background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);    
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);   
+                        background-color:#3d94f6;   -moz-border-radius:6px; -webkit-border-radius:6px;  border-radius:6px;  border:1px solid #337fed;   
+                        display:inline-block;   cursor:pointer; color:#ffffff;  font-family:arial;  font-size:15px; font-weight:bold;   padding:6px 24px;   
+                        text-decoration:none;   text-shadow:0px 1px 0px #1570cd;"
+                        action="{!changeChartAmt}" 
+                        reRender="pieChart,LineChartData,buttonBlk" 
+                        rendered="{!disButton}"/> &nbsp;
+                </apex:outputPanel>        
+         </apex:outputPanel>
+        <apex:outputPanel >
+        </apex:outputPanel>       
+        <apex:outputPanel id="LineButtonBlk" style="padding-left:330px;">
+            <apex:commandButton value="View Grid" styleClass="buttonStyle" 
+                        style="background-image:none;-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;box-shadow:inset 0px 1px 0px 0px #97c4fe;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));  
+                        background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%); background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);   background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);    
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);   
+                        background-color:#3d94f6;   -moz-border-radius:6px; -webkit-border-radius:6px;  border-radius:6px;  border:1px solid #337fed;   
+                        display:inline-block;   cursor:pointer; color:#ffffff;  font-family:arial;  font-size:15px; font-weight:bold;   padding:6px 24px;   
+                        text-decoration:none;   text-shadow:0px 1px 0px #1570cd;"
+                        action="{!LineListData}" 
+                        reRender="LineChart,LineButtonBlk" 
+                        rendered="{!!showLineData}"/>
+            <apex:commandButton value="View Chart" styleClass="buttonStyle"
+                        style="background-image:none;-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;box-shadow:inset 0px 1px 0px 0px #97c4fe;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));  
+                        background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%); background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);   background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);  
+                        background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);    
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);   
+                        background-color:#3d94f6;   -moz-border-radius:6px; -webkit-border-radius:6px;  border-radius:6px;  border:1px solid #337fed;   
+                        display:inline-block;   cursor:pointer; color:#ffffff;  font-family:arial;  font-size:15px; font-weight:bold;   padding:6px 24px;   
+                        text-decoration:none;   text-shadow:0px 1px 0px #1570cd;"
+                        action="{!LineChartData}" 
+                        reRender="LineChart,LineButtonBlk" 
+                        rendered="{!showLineData}" />
+        </apex:outputPanel>
+          <select id="eYear" 
+                style="float:right"
+                onChange="refreshRemoteChart();" >
+                    <option value="2015">2015</option>
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                    <option value="2011">2011</option>
+        </select> 
+        <select id="eMonth" 
+                style="float:right"
+                onChange="refreshRemoteChart();" >
+                    <option value="01">Jan</option>
+                    <option value="02">Feb</option>
+                    <option value="03">Mar</option>
+                    <option value="04">Apr</option>
+                    <option value="05">May</option>
+                    <option value="06">Jun</option>
+                    <option value="07">Jul</option>
+                    <option value="08">Aug</option>
+                    <option value="09">Sep</option>
+                    <option value="10">Oct</option>
+                    <option value="11">Nov</option>
+                    <option value="12">Dec</option>
+         </select> 
+        <apex:outputPanel style="float:right"> To :</apex:outputPanel> &nbsp;&nbsp;
+        <select id="sYear" 
+                style="float:right"
+                onChange="refreshRemoteChart();" >
+                    <option value="2015">2015</option>
+                    <option selected="selected" value='2014'>
+                        2014
+                    </option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                    <option value="2011">2011</option>
+        </select>
+        <select id="sMonth" 
+                style="float:right"
+                onChange="refreshRemoteChart();" >
+                    <option value="01">Jan</option>
+                    <option value="02">Feb</option>
+                    <option value="03">Mar</option>
+                    <option value="04">Apr</option>
+                    <option value="05">May</option>
+                    <option value="06">Jun</option>
+                    <option value="07">Jul</option>
+                    <option value="08">Aug</option>
+                    <option value="09">Sep</option>
+                    <option value="10">Oct</option>
+                    <option value="11">Nov</option>
+                    <option value="12">Dec</option>
+         </select> 
+        <apex:outputPanel style="float:right"> From :</apex:outputPanel>
+        <output type="text" id="inputTxt" value="{!wedg}" style="display:none" /><br/>
+        <output type="text" id="mGrp" value="{!mGrp}"/> 
+        <output type="text" style="padding-left: 1cm" id="mjrGrp" value="{!mjrGrp}"/>
+        <output type="text" id="mnrGrp" style="padding-left: 2cm" value="{!mnrGrp}"/>
+        <output type="text" id="prod" value="{!pList}" style="display:none"/> 
+        <output type="text" id="qtyAmt" value="{!qtyAmt}" /> 
+        <span id="statusDisplay"></span>
+        <apex:pageBlockSection columns="2" >
+            <apex:pageBlockSectionItem >
+                <apex:outputPanel id="pieChart">
+                    <apex:outputPanel id="tableData" style="{!IF(!showData,'display:none','')}">
+                        <div style="overflow:auto;width:600px;height:500px;border:1px solid;box-shadow: 10px 10px 5px #888888;backround-color:white;">
+                            <table width="100%" id="grpDataTable" class="list " border="1" cellpadding="0" cellspacing="2" >
+                                <thead>
+                                    <tr class="headerRow">
+                                        <th witdh="40%" id="gName">NAME</th>
+                                        <th width="30%" style="text-align:right;">AMOUNT</th>
+                                        <th width="30%" style="text-align:right;">QUANTITY</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matchData"></tbody>
+                            </table>
+                        </div> 
+                    </apex:outputPanel>
+                    <apex:outputPanel id="chartData" style="{!IF(showData,'display:none','')}">
+                        <apex:chart height="450" width="500" data="retrieveChartData"  resizable="true" name="RemotingPieChart" >
+                            <apex:pieSeries dataField="data" labelField="name" colorSet="#74A6BD,#7195A3,#D4E7ED,#EB8540,#B06A3B,#AB988B"  rendered="{!!disButton}" >
+                              <!--    -->
+                                <apex:chartLabel font="font-family:arial; font-size:10px; font-weight:bold;" display="rotate" rendererFn="renderPieChartLable"/>
+                                <apex:chartTips height="70" width="150" rendererFn="renderChartTip"  /> 
+                            </apex:pieSeries>   
+                            <apex:pieSeries dataField="qty" labelField="name" colorSet="#74A6BD,#7195A3,#D4E7ED,#EB8540,#B06A3B,#AB988B"     rendered="{!disButton}" >
+                                <apex:chartLabel font="font-family:arial; font-size:10px; font-weight:bold;" display="rotate" rendererFn="renderPieChartLableQty"/>
+                                <apex:chartTips height="70" width="150" rendererFn="renderChartTip" /> 
+                            </apex:pieSeries>   
+                            <!-- apex:legend position="left" spacing="0" padding="1" font="font-family:arial;font-size:9px;font-weight:bold;" / -->
+                        </apex:chart>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                   <apex:outputPanel id="LineChart">
+                    <apex:outputPanel id="tableData" style="{!IF(!showLineData,'display:none','')}">
+                        <div style="overflow:auto;width:600px;height:500px;border:1px solid;padding-left:20px;box-shadow: 10px 10px 5px #888888;backround-color:white;">
+                            <table width="100%" id="grpLineDataTable"  class="list" border="2" cellpadding="0" cellspacing="2" >
+                                <thead>
+                                    <tr class="headerRow">
+                                        <th witdh="40%" id="gName">NAME</th>
+                                        <th width="30%" style="text-align:right;">AMOUNT</th>
+                                        <th width="30%" style="text-align:right;">QUANTITY</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matchLineData"></tbody>
+                            </table>
+                        </div> 
+                    </apex:outputPanel>
+                    <apex:outputPanel id="LineChartData" style="{!IF(showLineData,'display:none','')}">
+                        <apex:chart height="500" width="600" data="retrieveLineChartData" name="RemotingLineChart">
+                            <apex:axis type="Numeric" position="left" fields="data,qty" title="Sales" grid="true"/>
+
+                            <apex:axis type="Category" position="bottom" fields="name"> 
+                               <apex:chartLabel rotate="315"/>
+                            </apex:axis>
+
+                            <apex:lineSeries axis="left"  xField="name" yField="data" markerType="circle" markerSize="6" smooth="5" strokeColor="#9B566D"   rendered="{!!disButton}">
+                                <apex:chartTips height="40" width="90" rendererFn="renderLineTip" />  
+                            </apex:lineSeries>   
+                            <apex:lineSeries axis="left"  xField="name" yField="qty" markerType="circle" markerSize="6" smooth="5" strokeColor="#9B566D"   rendered="{!disButton}" >
+                                <apex:chartTips height="40" width="90" rendererFn="renderLineTip" />  
+                            </apex:lineSeries>   
+                        </apex:chart>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

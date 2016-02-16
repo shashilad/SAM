@@ -1,0 +1,127 @@
+<apex:page title="Activity Optimizer - Help" showheader="false" sidebar="false">
+<head>
+<title>Activity Optimizer Help</title>
+</head>
+<apex:pageBlock >
+    <p>
+        <b>About Activity Optimizer</b></p>
+    <p>
+        The Activity Optimizer allows you to assign points to specific activities based on the Activity Type they select and the Activity Optimizer System Role the User is assigned to.
+    </p>
+    <p><b>Benefits of Activity Optimizer:</b>
+        <ul>
+            <li>Identify and encourage the correct behaviors</li>
+            <li>Quickly identify the value of activity by sales person or team</li>
+            <li>Measure the effectiveness of each individual user's use of time</li>        
+        </ul>
+    </p>
+    <p><b>Configuration:</b></p>
+    <p>
+        <ol>
+        <li>Open the Activity Optimizer Systems tab.</li>
+        <li>Click <b>New</b> to create a new Activity Optimizer System</li>
+            <ul>
+                <li>Enter a name and description for the new Activity Optimizer System</li>
+                <li>Click <b>Save</b> to view the Activity Optimizer System or <b>Save &amp; Return</b> to create another Activity Optimizer System</li>
+            </ul>
+        <li>From the Activity Optimizer Systems Tab, select an Activity Optimizer System</li>
+            <ul>
+                <li>Click <b>Edit</b> to make changes to this Activity Optimizer System</li>
+                <li>Click <b>New Optimized Activity</b> to create a new Optimized Activity</li>
+                    <ul>
+                        <li>Enter the name of the Optimized Activity, Points Per Hour and Category</li>
+                        <li>Check the Ignore Time checkbox if Point Per Hour will be the fixed amount of points given, regardless of time spent</li>
+                        <li>Click <b>Save</b> to return to the Activity Optimizer System Edit page or <b>Save &amp; New</b> to create another Optimized Activity</li>
+                    </ul>   
+            </ul>
+        <li>Click <b>Manage Users</b> to add Users to this Activity Optimizer System</li>
+            <ul>
+                <li>Select the Activity Optimizer System (or Unassigned for unassigned Users) to view Users in that Activity Optimizer System</li>
+                    <ul>
+                        <li>No more than 200 Users per Activity Optimizer System can be displayed or managed at a time!</li>
+                        <li>To search for a specific User within an Activity Optimizer System, enter their name (or a portion of it) in the search bar and click <b>Search</b></li>
+                    </ul>
+                <li>To add a User or Users to the Members, highlight their name(s) in the Available Members section and click <b>Add</b></li>
+                <li>To add User or Users in the Members to the Activity Optimizer System, click <b>Save</b> or <b>Save &amp; Return</b> to return to the Activity Optimizer System.</li>
+            </ul>
+        <li>For each <b>Optimized Activity</b> you create, you will need to create a corresponding Activity Type value in the custom field <b>Activity Type</b> on the Activities record.</li>
+            <ul>
+                <li>To create a value in the <b>Activity Type</b> field, go to Setup -> App Setup -> Customize -> Activities -> Activity Custom Fields</li>
+                <li>Click on the <b>Activity Type</b> field.</li>
+                <li>Add a new pick list value for each <b>Optimized Activity</b> under each <b>Activity Optimizer System</b></li>
+                <ul>
+                    <li><b><font color="red">IMPORTANT</font></b> - Each value in the <b>Activity Type</b> field must match the <b>Optimized Activity</b> EXACTLY 
+                    or points will not be applied properly.</li>
+                </ul>
+            </ul>         
+        </ol>
+    </p>  
+    <p><b>Sharing Settings:</b></p>
+    <p>
+        <ol>
+        <li>Go to Setup -> Administration Setup -> Security Controls -> Sharing Settings</li>
+             <ul>
+                <li>Set Activity Optimizer System to Public Read Only</li>
+                <li>Uncheck the box that says Grant Access Using Hierarchies</li>
+                <li>Set tmpUser to Public Read/Write</li>
+                <li>Uncheck the box that says Grant Access Using Hierarchies</li>
+            </ul>
+        
+        </ol>
+    </p> 
+     <p><b>Importing Predefined Systems:</b></p>
+    <p>
+        <ul>
+        <li>There is a folder in Documents called Activity Optimizer Documents</li>
+             <ul>
+                <li>This folder contains two files, Activity Optimizer Systems.csv and Activity Types.csv that can be used to import the standard systems and activity types.</li>
+             </ul>
+       <li>To import the files:</li>
+             <ol>
+                <li>Download the Activity Optimizer Systems.csv file to your machine.</li>
+                <li>Go to Setup -> Administration Setup -> Data Management -> Import Custom Objects</li>
+                <li>Start the Import Wizard</li>
+                <li>Choose the Activity Optimizer System and follow the steps in the Wizard to import the records in the file</li>
+                <li>Download the Activity Types.csv file to your machine.</li>
+                <li>Go to Setup -> Administration Setup -> Data Management -> Import Custom Objects</li>
+                <li>Start the Import Wizard</li>
+                <li>Choose the Optimized Activity and follow the steps in the Wizard to import the records in the file</li>
+            </ol>
+        
+        </ul>
+    </p>       
+  
+    <p>
+        <b>About Sales Optimizer</b></p>
+    <p>
+        Sales Optimizer (formerly Applied Concepts Institute) is an innovative sales performance and productivity company. 
+        We are both a Select salesforce.com Consulting Partner and an AppExchange 
+        Partner. Our organization has extensive experience in Salesforce CRM deployment 
+        with expertise in configuration, implementation, user adoption and support. We 
+        specialize in sales, management and customer service process implementation, 
+        focused on creating a healthy pipeline, winning all winnable deals and 
+        retention/growth of existing base of business. We also provide world class 
+        sales, management and customer service training with programs focused on the 
+        following competencies: Sales management leadership; Opportunity, Account and 
+        Territory Optimization; New hire, basic and executive selling skills; 
+        Tele-Prospecting, Tele-Sales and customer service skills.</p>
+    <p>For more information about Sales Optimizer, please visit our website at <a href="http://www.salesoptimizer.com" target="_blank">
+    http://www.salesoptimizer.com</a></p>
+    <p>
+        <b>Questions / Comments / Suggestions / Ideas</b></p>
+    <ul>
+        <li>
+            If you have a question about the Activity Optimizer, please email us at <a href="mailto:sales@salesoptimizer.com">sales@salesoptimizer.com</a> or call us at 
+            407-389-6060.</li>
+    </ul>
+    <p>
+        <b>Help With Salesforce.com</b></p>
+
+    <ul>
+        <li>Sales Optimizer is a Select Salesforce.com Consulting Partner and can help 
+            your organization with all aspects of Salesforce.&nbsp; Please email us 
+            at <a href="mailto:sales@salesoptimizer.com">sales@salesoptimizer.com</a> 
+            or call us at 407-389-6060 to discuss your needs.</li>
+    </ul>
+    </apex:pageBlock>
+</apex:page>

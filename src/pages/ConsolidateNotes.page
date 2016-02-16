@@ -1,0 +1,130 @@
+<apex:page standardController="AccountQI__c" recordSetVar="a" extensions="ConsolidateNotes_Controller"   showHeader="false" sidebar="false" docType="html-5.0"   >
+    <html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>jQuery UI Accordion - Default functionality</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css"/>
+        <script>
+             $(function() {
+                $(".acord").accordion({
+                    header: "> h3:not(.item)", //this line is a bug fix for accordion jquery//
+                    heightStyle: "content",
+                    active: false,
+                    collapsible: true
+                });
+  
+            });
+    
+        </script>
+        <style type="text/css">       
+            .bPageBlock .pbHeader {
+                                    background-color:#6699CC;
+                                  }
+            .bPageBlock .pbBody {
+                                    background-color:#6699CC;
+                                }
+        </style>                        
+
+    </head>
+    <body>  
+        <apex:form >       
+                <apex:pageBlock > 
+                    <b><apex:commandLink value="{!acc.name}" action="/{!acc.id}"/></b> 
+                <center>
+                    <apex:selectList value="{!ProfileType}"  size="1" style="color:#195075">
+                        Select a Profile &nbsp;   <apex:selectOptions value="{!items}"/>
+                        <apex:actionSupport event="onchange" action="{!getData}"  />
+                    </apex:selectList> 
+                    <apex:inputText value="{!strSearch}" > &nbsp; &nbsp; &nbsp; Search Text   &nbsp; &nbsp; 
+                    </apex:inputText>
+                    <!-- apex:selectList id="catDispaly" value="{!Category}"   size="1" style="color:green">
+                        Category &nbsp;<apex:selectOptions value="{!Categories}"/>
+                    </apex:selectList -->&nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Go" action="{!getData}" />&nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Reset" action="{!doReset}" />&nbsp;&nbsp;&nbsp;
+                    <apex:inputCheckbox value="{!isAttach}">Attach PDF to Account? </apex:inputCheckbox>   &nbsp;&nbsp;
+                    <apex:commandButton value="Generate & View PDF" action="{!attach}" onclick="window.open('/apex/AccountCompReportPDF?id={!acc.Id}');"/>
+                    <!-- action="/apex/AccountCompReportPDF?id={!acc.Id}" / -->
+                </center>
+            </apex:pageBlock>   
+        </apex:form>
+        <div style="overflow:auto;width:100%;height:100%; background-color:#6699CC;">
+            <table width="100%" height="100%">
+                <tr height="80%">
+                    <td width="50%">
+                        <div class="acord" style="overflow:auto;height:300px">
+                            <apex:repeat value="{!mp}" var="s">
+                                <h3>
+                                    <apex:outputText style="white-space:pre-wrap;" value="{!s}"/>
+                                </h3>
+                                <div class="content">
+                                    <div class="acord">
+                                        <apex:repeat value="{!mp[s]}" var="q"> 
+                                            <h3>
+                                                <apex:outputPanel rendered="{!q.Subject__c!=null}"><b>{!q.Category__c}</b>&nbsp;  :&nbsp;&nbsp;  {!q.Subject__c}"</apex:outputPanel>
+                                                <apex:outputPanel rendered="{!q.Subject__c==null}"><b>{!q.Category__c}</b>&nbsp;  :&nbsp;&nbsp;  {!q.Custom_Question__c}"</apex:outputPanel>
+                                            </h3>
+                                            <div class="content">
+                                                <apex:outputText value="{!q.Comments__c}" escape="false"/>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                </div>
+                            </apex:repeat>
+                        </div>
+                    </td>
+                    <td width="50%" >
+                        <div class="acord" style="overflow:auto;height:300px">
+                            <apex:repeat value="{!mp}" var="s">
+                                <h3>
+                                    <apex:outputText style="white-space:pre-wrap;" value="{!s}" />
+                                </h3>
+                                <div class="content">
+                                    <div class="acord">
+                                        <apex:repeat value="{!mp[s]}" var="q"> 
+                                            <h3>
+                                                <apex:outputPanel rendered="{!q.Subject__c!=null}"><b>{!q.Category__c}</b>&nbsp;  :&nbsp;&nbsp;  {!q.Subject__c}"</apex:outputPanel>
+                                                <apex:outputPanel rendered="{!q.Subject__c==null}"><b>{!q.Category__c}</b>&nbsp;  :&nbsp;&nbsp; {!q.Custom_Question__c}"</apex:outputPanel>
+                                            </h3>
+                                            <div class="content">
+                                                <apex:outputText value="{!q.Comments__c}" escape="false"/>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                </div>
+                            </apex:repeat>
+                        </div>
+                    </td>
+                </tr>  
+                <tr height="20%">
+                    <td colspan="2" >
+                       <apex:form >
+                            <apex:outputpanel >
+                                <apex:actionstatus id="status">
+                                    <apex:facet name="start">
+                                        <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+                                               height: 100%;opacity:0.65;width:100%;">
+                                            <div class="waitingHolder" style="top: 160.2px; width: 91px;">
+                                                <img class="waitingImage" src="/img/loading32.gif" title="Please Wait..." />
+                                                <span class="waitingDescription">Saving .....</span>
+                                            </div>
+                                        </div>
+                                    </apex:facet>
+                                </apex:actionstatus>
+                            </apex:outputpanel>
+                            <apex:outputPanel rendered="{!!noQuestions}">
+                                <apex:outputPanel id="dummy"> {!doFindConNotes}</apex:outputPanel>
+                                 <apex:commandButton id="saveBtn" value="  Save " action="{!doSave}" reRender="dummy" status="status" />
+                                <apex:inputField value="{!con.Consolidated_Notes__c}"  style="width:100%;" />
+                            </apex:outputPanel>
+                        </apex:form>
+                    </td>
+                </tr>
+            </table>
+        </div> 
+    </body>
+    </html>
+</apex:page>

@@ -1,0 +1,252 @@
+<apex:page controller="OptimizerBootstrapController" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" language="en-US" applyHTMLTag="false">
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Optimizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap -->
+    <link href="{!URLFOR($Resource.bootStrap_new, 'css/bootstrap.css')}" rel="stylesheet" media="screen"/>
+    <apex:includeScript value="{!URLFOR($Resource.bootStrap_new, 'js/bootstrap.min.js')}"/>
+    <apex:includeScript value="/support/console/27.0/integration.js"/>
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"/>
+    <apex:includeScript value="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    
+<style type="text/css">
+.header-fixed {
+    width: 100% 
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: auto;
+    height: 300px;
+}
+
+.header-fixed > tbody > tr > td,
+.header-fixed > thead > tr > th {
+    float: left;
+}
+
+.acc{
+  width:40%;
+}
+.JJHCS{
+  width:13%;
+}
+.actM{
+  width:10%;
+}
+.MBO{
+  width:13%;
+}
+.maint{
+  width:7%;
+}
+.house{
+  width:10%;
+}
+.isr{
+  width:7%;
+}
+
+
+</style>
+
+  </head>
+  
+  <body>
+
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="../" class="navbar-brand">ETHICON</a>
+          <!-- <apex:image value="{!URLFOR($Resource.vectorLogo)}"/> -->
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Objectives<span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">
+                <li><a href="/apex/Objectives_Page_v11?sfdc.tabName=01rf0000000D0ul">MBO</a></li>
+                <li class="divider"></li>
+                <li><a href="/a0J/o">Objectives</a></li>
+                <li><a href="/a0I/o">Master Objectives</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="/001/o">Accounts</a>
+            </li>
+            <li>
+              <a href="/003/o">Contacts</a>
+            </li>
+            <li>
+              <a href="/apex/TableauReport?sfdc.tabName=01rf0000000D2i3">Analyzer</a>
+            </li>
+            
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/setup/forcecomHomepage.apexp">Setup</a></li>
+            <li><a href="/_ui/core/userprofile/UserProfilePage?tab=sfdc.ProfilePlatformFeed">{!$User.FirstName} {!$User.LastName}</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+    <br />
+    <br />
+    <br />
+    
+    <apex:outputPanel styleClass="container" layout="block">
+    <div class="row">
+      <div class="col-md-15 col-md-offset-2">Click to view: <a href="https://cs16.salesforce.com/001/o">BackOrder Report(408)</a>       <a href="https://cs16.salesforce.com/001/o">Active Quotes(0)</a>
+      </div>
+    </div>
+    </apex:outputPanel>
+
+    <apex:outputPanel styleClass="container" layout="block">
+      <!-- Example row of columns -->
+      <apex:outputPanel styleClass="row" layout="block">
+        <apex:outputPanel styleClass="col-md-18 col-md-offset-2" layout="block">
+        <div class="col-lg-15">
+            <div class="bs-component">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h6 class="panel-title">OPEN ACTIVITIES ({!TaskSize})</h6>
+                </div>
+                <div class="panel-body">
+                  <apex:dataTable value="{!task}" var="tsk" styleClass="table table-bordered table-hover">
+                    <apex:column headervalue="Date">
+                   <apex:outputField value="{!tsk.ActivityDate}" />
+                 </apex:column>
+                 <apex:column headerValue="Subject">
+                   <apex:outputLink value="/{!tsk.Id}" target="_blank"> {!tsk.Subject} </apex:outputLink>
+                 </apex:column>
+                 <apex:column headerValue="Name">
+                   <apex:outputLink value="/{!tsk.WhoId}" target="_blank"> {!tsk.Who.Name} </apex:outputLink>
+                 </apex:column>
+                 <apex:column headerValue="Related To">
+                   <apex:outputLink value="/{!tsk.WhatId}" target="_blank"> {!tsk.What.Name} </apex:outputLink>
+                 </apex:column>
+                </apex:dataTable>
+                </div>
+              </div>
+            </div>
+        </div>
+      </apex:outputPanel>
+     </apex:outputPanel> 
+    </apex:outputPanel>
+
+    <apex:outputPanel styleClass="container" layout="block">
+      <!-- Example row of columns -->
+      <apex:outputPanel styleClass="row" layout="block">
+        <apex:outputPanel styleClass="col-md-15 col-md-offset-2" layout="block">
+        <div class="col-lg-13">
+            <div class="bs-component">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h6 class="panel-title">LINKS</h6>
+                </div>
+                <div class="panel-body">
+                   <p><apex:outputLink value="/apex/TableauReport?sfdc.tabName=01rf0000000D2i3" target="_blank">Analyzer</apex:outputLink></p>
+                   <p><apex:outputLink value="http://www.ethicon360.com/" target="_blank">Ethicon 360</apex:outputLink></p>
+                   <p><apex:outputLink value="http://www.ethicon.com/healthcare-professionals" target="_blank">Ethicon</apex:outputLink></p>
+                   <p><apex:outputLink value="http://teamsna.jnj.com/ees/fst/_layouts/AccessDenied.aspx?Source=http%3A%2F%2Fteamsna%2Ejnj%2Ecom%2Fees%2Ffst%2Fdefault%2Easpx" target="_blank">FST SharePoint Site</apex:outputLink></p>
+                   <p><apex:outputLink value="http://teamsna.jnj.com/ees/fst/_layouts/AccessDenied.aspx?Source=http%3A%2F%2Fteamsna%2Ejnj%2Ecom%2Fees%2Ffst%2Fdefault%2Easpx" target="_blank">GS OneStop</apex:outputLink></p>
+                   <p><apex:outputLink value="http://thescope.jnj.com/global/hcc/Pages/indexpage.aspx" target="_blank">Health Care Compliance</apex:outputLink></p>
+                </div>
+              </div>
+            </div>
+        </div>
+      </apex:outputPanel>
+     </apex:outputPanel> 
+    </apex:outputPanel>
+   
+    <apex:outputPanel styleClass="container" layout="block">
+      <!-- Example row of columns -->
+      <apex:outputPanel styleClass="row" layout="block">
+        <apex:outputPanel styleClass="col-md-15 col-md-offset-2" layout="block">
+          <div class="col-lg-13">
+            <div class="bs-component">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h6 class="panel-title">EVALUATION ALERTS ({!AccountSize})</h6>
+                </div>
+                
+                <div class="panel-body">
+                  <apex:dataTable value="{!accounts}" var="account" styleClass="table table-striped header-fixed">
+                    <apex:column styleClass="filterable-cell" headerClass="acc" width="40%" headerValue="Account Name" rendered="{!showName}">
+                      <apex:outputLink value="/{!account.Id}" target="_blank" > 
+                      {!account.name} </apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="filterable-cell" headerClass="JJHCS" width="13%" headerValue="JJHCS" rendered="{!showNumber}" >
+                      <apex:outputField value="{!account.AccountNumber}" />
+                    </apex:column>
+                    <apex:column styleClass="filterable-cell" headerClass="actM" width="10%" headerValue="Activity" rendered="{!showActivity}" >
+                      <apex:outputField value="{!account.Activity_Monitor__c}"/>
+                    </apex:column>
+                    <apex:column styleClass="filterable-cell" headerClass="MBO" width="13%" headerValue="MBO" rendered="{!showMBO}" >
+                      <apex:outputField value="{!account.MBO__c}"/>
+                    </apex:column>
+                    
+                    <apex:column styleClass="filterable-cell" headerClass="maint" width="7%" headerValue="Maint" rendered="{!showMaintenance}" >
+                      <apex:outputField value="{!account.Maintenance__c}" />
+                    </apex:column>
+                    <apex:column styleClass="filterable-cell" headerClass="house" width="10%" headerValue="House" rendered="{!showHouse}" >
+                      <apex:outputField value="{!account.House__c}" />
+                    </apex:column>
+                    <apex:column styleClass="filterable-cell" headerClass="isr" width="7%" headerValue="ISR" rendered="{!showISR}" >
+                      <apex:outputField value="{!account.ISR__c}" />
+                    </apex:column>
+                  </apex:dataTable>
+                  <!-- </div> -->
+                </div>
+                
+              </div>
+            </div>
+          </div>
+      </apex:outputPanel>
+     </apex:outputPanel>
+
+
+      <hr />
+ 
+      <footer>
+        <p>Optimizer 10.3</p>
+      </footer>
+    </apex:outputPanel> <!-- /container -->
+    
+    
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- <apex:stylesheet value="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/spacelab/bootstrap.min.css"/>
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/> -->
+    
+  </body>
+</html>
+</apex:page>

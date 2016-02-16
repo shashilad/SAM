@@ -1,0 +1,429 @@
+<apex:component >
+     <apex:attribute name="profileName" 
+     		description="This is the value for the profile name"
+        	type="String" 
+        	required="true"/>
+	    	
+    			    <apex:pageBlockSection columns="1" title="Potentional Other Titles" collapsible="true" >
+							<!--  ################################################################  titles #############################-->
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamACO}">
+			     				ACO Administrator <br/>
+			     				Medical Director ACO <br/>
+			     				ACO VP <br/>
+		    	 				ACO Director 
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamMedDir}">
+		     			   		Chief Medical Officer <br/>
+		     			   		Surgical Medical Director <br/>
+		     			   		Medical Director <br/>
+		     			   		VP Medical Affairs <br/>
+		     			   		Chief Clinical Officer <br/>
+		     			   		Chief Physician Executive
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamInfControl}">
+		     			    	Infection Control Director <br/> 
+		     			    	VP <br/> 
+		     			    	Quality VP <br/> 
+		     			    	Quality Director  
+		     			    	Dir./VP Nursing <br/>
+		     			    	Risk Management <br/>
+		     			    	Dir./VP Infection Prevention <br/>
+		     			    	Chief Medical Officer <br/>
+		     			    	Dir/VP of Quality <br/>
+		     			    	Dir./VP Patient Safety
+		     			    </apex:outputPanel>
+		     			    <!-- apex:outputPanel rendered="{!profileName == $Label.SamInfPrevent}">
+		     			    	Dir./VP Nursing <br/>
+		     			    	Risk Management <br/>
+		     			    	Dir./VP Infection Prevention <br/>
+		     			    	Chief Medical Officer <br/>
+		     			    	Dir/VP of Quality <br/>
+		     			    	Dir./VP Patient Safety
+							</apex:outputPanel -->
+							<apex:outputPanel rendered="{!profileName == $Label.SamManagedMrkt}">
+		     			    	Payer Relations <br/> 
+		     			    	Network Administration <br/> 
+		     			    	Health Plan Contracting
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamPopHealth}">
+		     			    	Chronic Disease Management
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamQuality}">
+		     					Chief Quality Officer <br/> 
+		     					Chief Medical and Quality Officer <br/> 
+		     					VP of Patient Safety and Medical Affairs <br/> 
+		     					Chief Quality and Patient Safety Officer <br/> 
+								Chief Nursing and Quality Officer
+		     			    	Service Line Lead <br/>
+		     			    	CNO/VP of Nursing<br/>
+		     			    	CEO of physician groups
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamNursing}">
+		     			    	CNO <br/>
+		     			    	VP Nursing  <br/>
+		     			    	OR Director <br/>
+		     			    	Service Line Coordinator <br/>
+		     			    	Clinical Resource Manager <br/>
+		     			    	Clinical Education Manager  <br/>
+		     			    	OR Business Manager <br/>
+								OR Supply Chain Manager
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamPerioperative}">
+		     			    	Admin Director <br/>
+		     			    	Director <br/>
+		     			    	VP Surgical Services <br/>
+		     			    	Perioperative Services
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamSurgeon}">
+		     			    	Chief of Surgery <br/>
+								CMO<br/>
+								Department Chief<br/>
+								Academic or Chair<br/>
+								Physician Practice President<br/>
+								Center of Excellence (KOL) surgeon<br/>
+								Community based surgeon
+		     				</apex:outputPanel>
+
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamPatientExp}">
+		     			    	Medical Group Executive<br/>
+		     			    	Chief Nursing Officer<br/>
+		     			    	Chief Medical Officer<br/>
+		     			    	VP of Marketing<br/>
+		     			    	VP of Business Solutions<br/>
+		     			    	VP of Managed Care<br/>
+		     			    	Chief Experience Officer<br/>
+		     			    	Dir./VO of Population Health<br/>
+		     			    	Dir/VP of Integration<br/>
+		     			    	Accountable Care Officer<br/>
+		     			    	PA Officer
+							</apex:outputPanel>
+		     			    <!-- apex:outputPanel rendered="{!profileName == $Label.SamQualityO}">
+		     			    	Service Line Lead <br/>
+		     			    	CNO/VP of Nursing<br/>
+		     			    	CMO<br/>
+		     			    	Chief Quality Officer<br/>
+		     			    	CEO of physician groups
+							</apex:outputPanel -->
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamHealthCare}">
+		     			    	VP Supply Chain/Director of SC and Business Services <br/>
+		     			    	Director of Value Analysis <br/>
+		     			    	CFO <br/>
+		     			    	COO <br/>
+		     			    	Director of Distribution - If central warehouse (CSC,CDC)
+							</apex:outputPanel>
+						</apex:pageBlockSection>
+		     		    <apex:pageBlockSection columns="1" title="Focus Areas">
+							<!--  ################################################################  Focus #############################-->
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamACO}">
+			     				Who ACO is aligned with	(CMS or Commercial), <br/> 
+			     				Contracting Strategies, <br/>
+			     				Bonus and Penalties? <br/>
+		    	 				Risks?
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamMedDir}">
+		     			    	Quality of physicians  <br/>
+		     			    	Outcomes <br/>
+		     			    	Clinical indicators <br/> 
+		     			    	Patient perception of facility from quality/healthcare perspective
+			  				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Infection Control Profile'}">
+		     			    	Identified areas of interest – readmissions, infections, etc. <br/> 
+		     			    	Population health challenges and outbreaks (ebola) <br/> 
+		     			    	Department of health pressures <br/> 
+		     			    	Media stories <br/> 
+		     			    	Provider (doctor and RN education) <br/>  
+		     			    	Staff adherence to protocols <br/> 
+		     			    	Impact on VBP penalities
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Managed Markets / Payer Relations Profile'}">
+		     			    	Payer reimbursement rates?  <br/> 
+		     			    	Health Plan pressures?  <br/> 
+		     			    	Interest in employer direct contracting?  <br/> 
+		     			    	Areas of specialty for the hospital?  <br/> 
+		     			    	Areas of focus?  <br/> 
+		     			    	COE status?  <br/> 
+		     			    	Network affiliation? <br/>  
+		     			    	Payer mix? <br/> 
+		     			    	ACO involvement
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Population Health Profile'}">
+		     			    	State Health Rankings <br/>
+		     			    	City Health Rankings <br/>
+		     			    	Disease management <br/>
+		     			    	ACO and PCMH roles and involvement <br/>
+		     			    	Employer and health plan interests 
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Quality Profile'}">
+		     					Readmission rates <br/>
+		     					HAC <br/>
+		     					Infection rates <br/>
+		     					Patient safety
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Nursing Profile'}">
+		     			    	Clinical outcomes and Patient Satisfaction <br/>
+		     			    	Nurse Recruitment and Retention <br/>
+		     			    	Managing Budget <br/>
+		     			    	Staff CEU’s <br/>
+		     			    	Teams have good relationships/Collaborative <br/><br/>
+		     			    	<div style="padding-left:20pt;font-size:12px;">
+		     			    	    <ul>
+		     			    			<li>Organize Service Line Management of inpatient and outpatient clinical services centered on specialized service lines. </li>
+										<li>Develop Annual Service Line business Plan: Plan should be developed and aimed at attaining the goals set forth in the business strategy. </li>
+										<li>Conduct Service Line Audits: Identify areas of strengths and vulnerability, identify drivers of marginal performance and determine turn around strategies. </li>
+										<li>Direct, coordinate and manage Perioperative patient care services.  </li>
+										<li>Assures leadership coverage of patient care unit, quality of care, patient safety and coordination of care. </li>
+										<li>Provides leadership or expertise for projects or program development within the organization.  </li>
+										<li>Maintains up-todate knowledge of current health care trends and standardization of care. </li>
+										<li>Provides public or professional presentations on programs or services.  </li>
+										<li>Serves in a leadership role for hospital regulatory compliance. </li>
+										<li>Coordinates the recruiting, selection, orientation, performance evaluation and continuing education of patient care and support staff to meet all the mandatory education and competency requirements. </li>
+										<li>Maintains current knowledge of leadership/management principles through educational offerings and reading management journals. </li>
+										<li>Ensures that adequate and appropriate equipment and supplies are readily available for staff to properly care for patients.  </li>
+										<li>Initiates and coordinates the purchase of large capital equipment for the nursing division. (ex: purchaseof beds, defibrillator etc.) </li>
+										<li>Provides interpretation and rationale for hospital policies and procedures for personnel, physicians and others. </li>
+										<li>Actions support compliance to policies and procedures. Assumes leadership position in the revision of policy/procedure manuals to meet caregiver needs.</li>
+									</ul> 
+		     			    	</div>
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Perioperative Services Profile'}">
+		     			    	Clinical outcomes <br/>
+		     			    	Budgets<br/>
+		     			    	Case loads<br/>
+		     			    	Staff Retention and Recruitment
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Surgeon Profile'}">
+		     			    	• Hospital strategic goals and metrics, revenue, expense, penalties <br/>
+		     			    	• Patient outcomes and satisfaction, procedure load, referrals,reimbursement, surgery/block time, nursing/tech staff 
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Supply Chain - Healthcare Profile'}">
+		     			    	  Immediate or short term cost reduction by ‘X’ % <br/>
+								  Unlocking value within supply chain (beyond line item price reduction); vendor/SKU consolidations, product standardization<br/>
+								  Re-processing<br/>
+								  Supplier diversity<br/>
+								  Establishing/streamlining their CSC<br/>
+								  Access to data<br/>
+								  Increased control of purchasing decisions<br/>
+								  Product outcomes/evidence/claims
+							</apex:outputPanel>
+		     			</apex:pageBlockSection>
+		  			    <apex:pageBlockSection columns="1" title="Pre-meeting Considerations"  >
+		     			    <!--  ################################################################ Pre-meeting #############################-->
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - ACO Profile'}">
+		     					How long in the position and backtround ? <br/>
+		     					Are specialists in ACO or just PCPs ? <br/>
+		     					How long is contract with managed care company ? <br/>
+		     					ID interest areas driven by payer and by hospital for ACO to iddentified in press or in annual report
+		     				</apex:outputPanel>	
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Medical Director Profile'}">
+								What is area of responsibility? <br/>
+								Is he/she responsible for the surgery business? <br/> 
+								Involvement in CMS metrics and reporting?  <br/>
+								Who/what departments report to him/her?  <br/>
+								Any community involvement 
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Infection Control Profile'}">
+		     			    	Hospital reports on infections and quality metrics, any patient incidents, 
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Managed Markets / Payer Relations Profile'}">
+		     			    	What is hospital philosophy about payers?   <br/>
+		     			    	Hard negotiators?  <br/> 
+		     			    	Network members?   <br/>
+		     			    	Employer relationships?   <br/>
+		     			    	ACO rates? 
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Population Health Profile'}">
+		     			    	What is the health of the population that hospital serves ? <br/>
+		     			    	Identify any key initiatives of the stakeholders in the region
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Quality Profile'}">
+		     					Available quality reports<br/> 
+		     					Penalty reports<br/> 
+		     					Media stories<br/> 
+		     					Annual report<br/>
+		     					<br/>
+		     					<b> Good to Know :  </b> <br/>
+		     					<div style="padding-left: 5pt;">
+		     					    <ul>
+										<li>Many CQOs and other health care quality executives are clinicians by training. </li>
+										<li>In addition to having an understanding of clinical quality, a number of CQOs are Six Sigma black belts or lean experts. </li> 
+										<li>CQOs also likely hold Certified Professional in Healthcare Quality (CPHQ) designation, which is offered through the National Association for Healthcare Quality (NAHQ).</li>
+									</ul>
+		     					</div>
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Nursing Profile'}">
+		     			    	What is area of responsibility? <br/>
+		     			    	Is he/she responsible for the surgery business? <br/>
+								Who/what departments report to him/her?  <br/>
+								Background?
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Perioperative Services Profile'}">
+		     			    	Background-Nursing, business, or both. <br/> 
+		     			    	Training/Education
+		     			    	<div style="padding-left:20pt;font-size:12px;">
+		    						<p><b>Example - </b>The Executive Director, Perioperative Services Strategic and Operational Leadership for the
+									   	development of the Perioperative services so that a full continuum of services is created and structured in
+									   	response to customer needs (patient, payer and physician). The Executive Director maintains expertise in
+									   	program and financial aspects of Perioperative services, including Pre Anesthesia, Pre-Operative, Operating
+									   	Room, PACU, Sterile Processing, and GI Lab. The Executive Director will guide the development of the overall
+										leadership structure and strategic plan, quality, and create goals and plans for growth for the service line.
+										Responsible for the overall administration of Perioperative programs in accordance with accepted national
+										standards, federal and state laws as well as hospital and departmental policies. Directs and provides oversight for
+										all activities for the Department of Perioperative Services which includes staffing and resource utilization.
+										Develops and implements budgets, policies, planning, technical operations, and equipment acquisition.
+										Participates in monitoring compliance with State and Federal regulations as well as JCAHO standards.</p>
+		    			    	</div>	
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Surgeon Profile'}">
+		     			    	Title <br/>
+		     			    	Specialty <br/>
+		     			    	Responsibility <br/>
+		     			    	Bckground/training <br/>
+		     			    	Career/practice goals <br/>
+								Private practice or Hospital employee
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Owens - Infection Prevention Profile'}">
+		     			    		<ul>
+		     			    		 	<li> Stakeholder background, experiences.</li> 
+		     			    		 	<li> Metropolitan Service Area information that id's share for all hospitals,payer mix,large employers.</li>
+		     			    	 		<li> General knowledge of the key issues for a given metropolitan area such as loss of major employer, shifting demographics, hospital consolidation.</li>
+		     			    		 	<li> Patient Demographic Info/payer mix/unemployment rates regionally /payer mix. </li>
+		     			    		 	<li> Hospital Acquired Conditions (HAC) and Readmission (RAC penalties). </li>
+		     			    		 	<li> Familiarity with standards of care such as (Surgical Care Improvement Measures) SCIP.</li> 
+		     			    		 	<li> Publicly available information that the hospital/system is marketing, promoting. </li>
+		     			    		 	<li> Key performance indicators/business Metrics. </li>
+		     			    		 	<li> Strategic supplier partnerships. </li>
+		     			    		 	<li> Trends on Surgical Site Infection (SSI) and Central Blood Stream Acquired Infection (CLABSI) rates /Hospital Acquired Conditions (HAC) and Readmission (RAC penalties) penalty.</li>
+		     			    			<li> Strategic initiatives. </li>
+		     			    		 	<li> Use of hospital benchmarking. </li> 
+		     			    		 	<li> General hospital priorities or focus areas.</li> 
+		     			    		 	<li> Known affiliations/ownership stakes with medical groups, alternate sites of care, clinics, surgery centers.</li> 
+		     			    		 	<li> Information on strategic interactions with patients, staff, or visitors. </li>
+		     			    		 	<li> Functional priorities.</li>
+		     			    		 	<li> Trends on Surgical Site Infection (SSI) and Central Blood Stream Acquired Infection (CLABSI) rates /Hospital Acquired Conditions (HAC) and Readmission (RAC penalties) penalty.</li> 
+		     			    	 		<li> Payor Mix</li>	
+		     			    		</ul>
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Owens - Patient Exp/Satisfaction Profile'}">
+									<ul>
+		     			    		 	<li> Stakeholder background, experiences.</li> 
+		     			    		 	<li> Metropolitan Service Area information that id's share for all hospitals,payer mix,large employers.</li>
+		     			    	 		<li> General knowledge of the key issues for a given metropolitan area such as loss of major employer, shifting demographics, hospital consolidation.</li>
+		     			    		 	<li> Patient Demographic Info/payer mix/unemployment rates regionally /payer mix. </li>
+		     			    		 	<li> Publicly available information that the hospital/system is marketing, promoting. </li>
+		     			    		 	<li> Key performance indicators/business Metrics. </li>
+		     			    		 	<li> Strategic supplier partnerships. </li>
+		     			    			<li> Patient Satisfaction Scores.</li>
+		     			    			<li> Strategic initiatives. </li>
+		     			    		 	<li> Use of hospital benchmarking. </li> 
+		     			    		 	<li> General hospital priorities or focus areas.</li> 
+		     			    		 	<li> Known affiliations/ownership stakes with medical groups, alternate sites of care, clinics, surgery centers.</li> 
+		     			    		 	<li> Information on strategic interactions with patients, staff, or visitors. </li>
+		     			    		 	<li> Trends on Surgical Site Infection (SSI) and Central Blood Stream Acquired Infection (CLABSI) rates /Hospital Acquired Conditions (HAC) and Readmission (RAC penalties) penalty.</li>
+		     			    		</ul> 	 
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Owens - Quality Profile'}">
+		     			    		<ul>
+		     			    		 	<li> Stakeholder background, experiences.</li> 
+		     			    		 	<li> Publicly available information that the hospital/system is marketing, promoting. </li>
+		     			    		 	<li> Key performance indicators/business Metrics. </li>
+		     			    		 	<li> Strategic supplier partnerships. </li>
+		     			    			<li> Strategic initiatives. </li>
+		     			    		 	<li> Use of hospital benchmarking. </li> 
+		     			    		 	<li> General hospital priorities or focus areas.</li> 
+		     			    		 	<li> Known affiliations/ownership stakes with medical groups, alternate sites of care, clinics, surgery centers.</li> 
+		     			    		 	<li> Functional priorities.</li>
+		     			    		 	<li> Trends on Surgical Site Infection (SSI) and Central Blood Stream Acquired Infection (CLABSI) rates /Hospital Acquired Conditions (HAC) and Readmission (RAC penalties) penalty.</li>
+		     			    		</ul>	
+							</apex:outputPanel>
+		     			</apex:pageBlockSection>
+					   <apex:pageBlockSection columns="1" title="Information Resources" >
+							<!--  ################################################################  Information resources #############################-->
+		     				<apex:outputPanel rendered="{!profileName =='Payer - ACO Profile'}">
+		     					HPED (payer data sources, CMS Reporting)<br/> 
+		     					Annual hospital report <br/>
+		     					local press coverage <br/>
+		     					Advisory Board 
+		     				</apex:outputPanel>	
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Medical Director Profile'}">
+		     			    	Local press coverage <br/>
+		     			    	Hospital Annual report <br/>
+		     			    	LinkedIn <br/>
+		     			    	Quality reports for the hospital
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Infection Control Profile'}">
+		     			    	VBP penalties and hospital profiles  <br/> 
+		     			    	Media reports <br/> 
+		     			    	Community health challenges <br/>
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Managed Markets / Payer Relations Profile'}">
+		     			    	HPED <br/> 
+		     			    	Media stories
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Population Health Profile'}">
+		     			    	HPED
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Payer - Quality Profile'}">
+		     					HPED <br/>
+		     					Account profile 
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Nursing Profile'}">
+		     			    	Hospital website <br/>
+		     			    	LinkedIn <br/>
+		     			    	AORN <br/>
+		     			    	FSO <br/>
+		     			    	Other JnJ OpCo <br/>
+		     			    	Google <br/>
+		     			    	Medical Industry <br/>
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Perioperative Services Profile'}">
+		     			    	Advisory Board <br/>
+		     			    	LinkedIn <br/>
+		     			    	FSO <br/>
+		     			    	AORN <br/>
+		     			    	Google <br/>
+		     			    	Hospital Website <br/>
+								Other Device companies <br/>
+								Friends
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Mather - Surgeon Profile'}">
+		     			    	Hospital website <br/>
+		     			    	FSO <br/>
+		     			    	LinkedIn <br/>
+		     			    	Nurses <br/>
+		     			    	Other surgeons
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Owens - Infection Prevention Profile'}">
+		     			    	Annual report, website, hospital promotional announcements.<br/> 
+		     			    	Center for Medicare and Medicaid Services (CMS) Data on infection.<br/> 
+		     			    	Joint Commission on Accreditation of Hospital Organization (JCAHO) requirements.
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Owens - Patient Exp/Satisfaction Profile'}">
+		     			    	Annual report, website, hospital promotional announcements. <br/> 
+		     			    	HCHAPS survey results, annual report, website.
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Owens - Quality Profile'}">
+		     			    	Annual report, website, hospital promotional announcements.
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName =='Supply Chain - Healthcare Profile'}">
+		     			    	HPED (payer data sources, CMS reporting)<br/> 
+		     			    	Annual hospital report<br/>
+		     			    	Local press coverage<br/>
+		     			    	Advisory Board
+							</apex:outputPanel>
+		     			</apex:pageBlockSection>
+							<!--  ################################################################  Documents #############################-->
+		     				<apex:outputPanel rendered="{!profileName =='Payer - ACO Profile'}">
+								<apex:outputLink value="https://ethiconus--sam.cs23.my.salesforce.com/069180000005x1n"
+		     									 target="_blank">
+									 <apex:image url="{!$Resource.FileImage}" width="20" height="20" title="ACO Cheat Sheet"/>
+									 ACO Cheat Sheet
+		     					</apex:outputLink> <br/>
+								<apex:outputLink value="https://ethiconus--sam.cs23.my.salesforce.com/069180000005x1s"
+		     									 target="_blank">
+       								 <apex:image url="{!$Resource.FileImage}" width="20" height="20" title="ACO Cheat Sheet"/>
+									 Shared Saving Cheat Sheet			
+		     					</apex:outputLink>
+			 			    </apex:outputPanel>
+	
+
+</apex:component>

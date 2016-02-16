@@ -1,0 +1,202 @@
+<apex:page standardController="Stakeholder_Interview__c" 
+           recordSetVar="a" 
+           extensions="ConsolidateNotes1All_Controller"   
+           standardStylesheets="true"
+           showHeader="false"
+           sidebar="false" 
+           docType="html-5.0"   >
+    
+    <html lang="en">
+        
+        <head>
+            <meta charset="utf-8"/>
+            <title>Insight Summary Update</title>
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+            <link rel="stylesheet" href="/resources/demos/style.css"/>
+            <apex:stylesheet value="{!URLFOR($Resource.Custom_Style,'CustomStyling.css')}"/>
+            <apex:stylesheet value="/dCSS/Theme2/en/common.css"/>
+            
+            <style type="text/css">       
+                fieldset { 
+                border: 0;                            // 2px groove (internal value);
+                }
+            </style>                
+        </head>
+        
+        
+        <body>  
+            <div class="Title">
+                Insight Summary Update 
+            </div>
+            
+            <table width="120%" height="100%">
+                <tr height="360px;">
+                    <td width="5%" rowspan="2" valign="top" >
+                        <div class="sidebox">
+            
+                            <apex:form >    
+                            	<apex:actionFunction name="getdata" action="{!getData}" reRender="dataBlk,selected" />
+                                <apex:pageBlock > 
+                                    <form >
+                                        <fieldset>  
+                                            <div class="sideTitle" >
+                                                <div style="padding-left:5px">Account</div>
+                                            </div>
+                                            <div class="sideTitleLink"><br/>
+                                                <apex:commandLink value="{!acc.JJHCS_Sys_Number__c} - {!UPPER(acc.name)}" 
+                                                                  action="/{!acc.id}"/>  
+                                                <br/><br/>
+                                            </div>
+                                        </fieldset>
+                                        
+                                        <fieldset>
+                                            <div class="sideTitle" >
+                                                <div style="padding-left:5px"> Filters</div>
+                                            </div>      
+                                            <div class="sideBody">
+                                                <div style="padding-left:5px">
+                                                    Stakeholder Type
+                                                    <apex:selectList value="{!ProfileType}" 
+                                                                     style="font-size:11px;"  
+                                                                     size="1" ><br/>
+                                                        <apex:selectOptions value="{!items}"/>
+                                                        <apex:actionSupport event="onchange" 
+                                                                            action="{!getData}" />
+                                                        
+                                                    </apex:selectList>
+                                                    <br/><br/>
+                                                    Selected --><apex:outputPanel id="selected">{!category}</apex:outputPanel>   
+                                                    <div  style="overflow:auto;width:200px;height:100px;">
+                                                    <apex:selectCheckboxes id="catDispaly" 
+                                                                     style="width:160px;font-size:11px;" 
+                                                                     value="{!Category}" layout="pageDirection" onclick="getdata();"
+                                                                     >
+                                                        Category <br/>
+                                                        <apex:selectOptions value="{!Categories}"  />
+                                                          <apex:selectOptions value="{!Categories}"  />  <apex:selectOptions value="{!Categories}"  />  <apex:selectOptions value="{!Categories}"  />  <apex:selectOptions value="{!Categories}"  />
+                                                        <!-- apex:actionSupport event="onclick" 
+                                                                            action="{!getData}" reRender="dataBlk" / --> 
+                                                       
+                                                        </apex:selectCheckboxes>
+                                                         
+                                                    </div>
+
+
+
+                                                    <br/>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset>
+                                            <div class="sideTitle">
+                                                <div style="padding-left:5px">Search</div>
+                                            </div>
+                                            <div class="sideBody" >
+                                                <div style="padding-left:5px">
+                                                    <apex:inputText value="{!strSearch}" 
+                                                                    style="width:158px;" >
+                                                        <apex:actionSupport event="onkeyup" 
+                                                                            action="{!getData}" 
+                                                                            reRender="dataBlk"/>
+                                                    </apex:inputText>&nbsp;
+                                                    <apex:commandButton value="Clear" action="{!doReset}" />
+                                                </div>    
+                                            </div>
+                                        </fieldset>
+                                        <br/><br/> <br/><br/> <br/><br/><br/><br/> <br/><br/><br/><br/> <br/><br/>
+                                        <br/><br/><br/><br/><br/><br/>
+                                    </form>
+                                   
+                                         
+                                </apex:pageBlock>   
+                            </apex:form>
+                        </div>
+                    </td>
+                    <td width="40%">
+                        <div style="overflow:auto;width:100%;height:100%;">
+                            <apex:outputPanel rendered="{!noQuestions}">
+                                <br/><br/><br/>
+                                <b> Insights not available for Stakeholder Type <i>"{!UPPER(ProfileType)}"</i>  and Category <i> "" </i> </b>
+	                        </apex:outputPanel>    
+                            <apex:outputPanel id="dataBlk">
+                                {!category}
+                                <apex:repeat value="{!mp}" var="s">
+                                    <apex:repeat value="{!mp[s]}" var="q"> 
+                                        <apex:outputPanel rendered="{!q.Comments__c != null}" >
+                                            <div class="box" style="padding-bottom:8px;">
+                                                <table width="100%">
+                                                    <tr style="font-size:10px;">
+                                                         <td width="30%"><b> Category: </b><h4 style="color:red;">  {!UPPER(q.name)}</h4></td>
+                                                        <td width="15%"><b> Date : </b><h4 style="color:red;">  <apex:outputField value="{!q.Stakeholder_Interviews__r.cDate__c}"/></h4></td>
+                                                        <!-- td width="30%"><b> Title :</b>   <h4 style="color:red;"> {!UPPER(q.Stakeholder_Interviews__r.Name)} </h4></td -->
+                                                        <td width="25%"><b> Contact :</b> <h4 style="color:red;"> {!UPPER(q.Stakeholder_Interviews__r.Contact_Name__r.name)} </h4></td> 
+                                                        <td width="30%"><b> Stakeholder : </b><h4 style="color:red;"> {!UPPER(q.Stakeholder_Interviews__r.Profile_Type__c)}</h4></td>
+                                                       
+                                                    </tr>
+                                                </table>   
+                                                <p style="margin:2 auto;">
+                                                    <apex:outputText value="{!q.Comments__c}" escape="false"/>
+                                                </p>       
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:repeat>
+                                </apex:repeat>
+                            </apex:outputPanel> 
+                        </div> 
+                    </td>
+                    <!-- td width="60%">
+                    <apex:iframe src="/apex/interviewinsight?id=a0V8A0000008XOoUAM" height="600px;" scrolling="true" />
+                    </td -->
+                </tr>  
+                <!-- tr>
+                    <td>
+                        <apex:form >
+                            <apex:outputpanel >
+                                <apex:actionstatus id="status">
+                                    <apex:facet name="start">
+                                        <div class="waitingSearchDiv" 
+                                             id="el_loading" 
+                                             style="background-color: #fbfbfb;height: 100%;opacity:0.65;width:100%;">
+                                            
+                                            <div class="waitingHolder" style="top: 160.2px; width: 91px;">
+                                                <img class="waitingImage" src="/img/loading32.gif" title="Please Wait..." />
+                                                <span class="waitingDescription">Saving .....</span>
+                                            </div>
+                                        </div>
+                                    </apex:facet>
+                                </apex:actionstatus>
+                            </apex:outputpanel>
+                            <apex:outputPanel rendered="{!!noQuestions}">
+                                <apex:outputPanel id="dummy"> 
+                                    {!doFindConNotes}
+                                </apex:outputPanel>
+                                <apex:actionFunction name="attach" action="{!attach}"/>
+                                <div style="width:100%;background:#cfeef8;">
+                                    <apex:commandButton id="saveBtn" 
+                                                        value="Save Changes" 
+                                                        style="background-color:#1797c0;background-image:none;color:#fff;" 
+                                                        action="{!doSave}" 
+                                                        onclick="attach();"
+                                                        reRender="dummy" 
+                                                        status="status" />
+                                    <apex:commandButton value="Export Insight Summary" 
+                                                        style="background-color:#1797c0;background-image:none;color:#fff;"
+                                                        title="PDF is also available on Attachment tab of Account view"
+                                                        onclick="window.open('/apex/AccountCompReportPDF?id={!acc.Id}');"/>
+                                    <b style="color:gray;padding-left:50px;">
+                                        Please use this box to capture summary notes for Stakeholder Type <i>"{!UPPER(ProfileType)}"</i>  and Category <i> "{!UPPER(category)}"</i>
+                                    </b> 
+                                </div>
+                                <apex:inputField value="{!con.Consolidated_Notes__c}" 
+                                                 style="width:100%;" />
+                            </apex:outputPanel>
+                        </apex:form>
+                        
+                    </td>
+                </tr -->
+            </table>
+        </body>
+    </html>
+</apex:page>

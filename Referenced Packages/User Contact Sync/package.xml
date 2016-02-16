@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>User Contact Sync</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <description>User Contact Sync by Sales Optimizer allows your system administrator to automatically keep a Contact record in sync with a User record.</description>
+    <namespacePrefix>uas</namespacePrefix>
+    <types>
+        <members>insertNewContacts</members>
+        <members>userContactSyncTest</members>
+        <members>vf_EditSettings</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>UCSHelpPage</members>
+        <members>editSettings</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>syncContact</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>User_Contact_Sync</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Contact.Active_User__c</members>
+        <members>Contact.User__c</members>
+        <members>User.Home_Phone__c</members>
+        <members>User.Sync_to_Contact__c</members>
+        <members>User_Contact_Sync_Settings__c.Account__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>User_Contact_Sync_Settings__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>User_Contact_Sync_Settings</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>User_Contact_Sync_Images</members>
+        <name>Document</name>
+    </types>
+    <types>
+        <members>User_Contact_Sync_Settings__c-User Contact Sync Settings Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>UCSLogo</members>
+        <name>StaticResource</name>
+    </types>
+    <version>35.0</version>
+</Package>

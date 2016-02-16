@@ -1,0 +1,278 @@
+<apex:component id="main">
+    <apex:attribute name="profileName" 
+                    description="This is the value for the profile name"
+                    type="String" 
+                    required="true"/>
+    
+           <div style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; font-weight:bold; padding-bottom:5px;">
+             Focus Area 
+        </div> 
+    <apex:pageBlockSection id="focus" columns="1"  collapsible="false">
+   
+             
+        <apex:outputPanel rendered="{!profileName == $Label.SamPatientExp}">
+            <div  >
+                Sorry ... Focus areas are not defined for this stakeholder type !!!	
+            </div>									
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamACO}">
+            <div  > 
+                <ul>
+                    <li>Who ACO is aligned with	(CMS or Commercial), </li> 
+                    <li>Contracting Strategies, </li>
+                    <li>Bonus and Penalties? </li>
+                    <li>Risks?</li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!profileName == $Label.SamMedDir}">
+            <div  > 
+                <ul>
+                    <li>Quality of physicians  </li>
+                    <li>Outcomes </li>
+                    <li>Clinical indicators </li> 
+                    <li>Patient perception of facility from quality/healthcare perspective</li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!profileName == $Label.SamInfControl}">
+            <div> 
+                <table width="100%" cellpadding="5px">
+                    <tr width="100%">
+                        <td width="50%">
+                            <b>Market/Brand</b>
+                            <ul>
+                                <li>Population health challenges
+                                    <ul style="font-size:11px;"  >
+                                        <li type="circle">Flu</li>
+                                        <li type="circle">Measles</li>
+                                        <li type="circle">Ebola</li>
+                                        <li type="circle">Multi Drug Resistant Organisms - VRE, MRSA, CRE</li>
+                                    </ul>  
+                                </li>	
+                                <li>Department of health pressures </li> 
+                            </ul>
+                        </td>
+                        <td width="50%">    
+                            <b>Organization and People</b>
+                            <ul>
+                                <li>Staff adherence to protocols </li> 
+                                <li>Education for Staff and Public </li> 
+                                <li>Occupational Health issues for staff</li> 
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">    
+                            <b>Finance and Risk</b>
+                            <ul>
+                                <li>Value Based Purchasing penalties 
+                                    <ul >
+                                        <li type="circle">Readmissions</li>
+                                        <li type="circle">Hospital Acquired Pneumonia</li>
+                                    </ul>
+                                </li>
+                                <li>Hospital Acquired Conditions (HAC) and Readmission (RAC) penalties for the area and/or the account.</li> 
+                            </ul>
+                        </td>	
+                        <td width="50%">    
+                            <b>Operational Quality</b>
+                            <ul>										
+                                <li>Data and Reporting</li> 
+                            </ul>
+                        </td>
+                    </tr>
+                </table>	
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!profileName == $Label.SamManagedMrkt}">
+            <div  > 
+                <ul>
+                    <li>Payer reimbursement rates?  </li> 
+                    <li>Health Plan pressures?  </li> 
+                    <li>Interest in employer direct contracting?  </li> 
+                    <li>Areas of specialty for the hospital?  </li> 
+                    <li>Areas of focus?  </li> 
+                    <li>COE status?  </li> 
+                    <li>Network affiliation? </li>  
+                    <li>Payer mix? </li> 
+                    <li>ACO involvement</li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!profileName == $Label.SamPopHealth}">
+            <div  > 
+                <ul>
+                    <li>State Health Rankings </li>
+                    <li>City Health Rankings </li>
+                    <li>Disease management </li>
+                    <li>ACO and PCMH roles and involvement </li>
+                    <li>Employer and health plan interests</li> 
+                </ul>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!profileName == $Label.SamQuality}">
+            <!-- div  > 
+<ul>
+<li>Readmission rates </li>
+<li>HAC </li>
+<li>Infection rates </li>
+<li>Patient safety</li>
+</ul>
+</div -->
+            <div> 
+                <table width="100%" cellpadding="5px">
+                    <tr width="100%">
+                        <td width="50%">
+                            <b>Market/Brand</b>
+                            <ul>
+                                <li>Patient safety</li>	
+                                <li>Population Health – Meaningful Use metrics on chronic disease management, preventative care, diagnostic screening.</li> 
+                            </ul>
+                        </td>
+                        <td width="50%">    
+                            <b>Organization and People</b>
+                            <ul>
+                                <li>Educating clinicians, board members, staff on specific quality goals</li> 
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">    
+                            <b>Finance and Risk</b>
+                            <ul>
+                                <li>Pay for performance metrics 
+                                    <ul >
+                                        <li type="circle">Hospital Acquired Conditions – “Never Events”</li>
+                                        <li type="circle">Readmission Rates </li>
+                                        <li type="circle">Clinical Process of Care</li>
+                                        <li type="circle">The patient experience</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>	
+                        <td width="50%">    
+                            <b>Operational Quality</b>
+                            <ul>										
+                                <li>Establishing quality performance metrics for multiple departments</li> 
+                                <li>Clinical outcomes and efficiency</li> 
+                                <li>Quality improvement</li> 
+                                <li>Compliance with accrediting and legal requirements</li> 
+                                <li>Managing and assessing potential risks and liabilities</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>	
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!profileName == $Label.SamNursing}">
+            <div  style="padding-left:50pt;"> 
+                Clinical outcomes and Patient Satisfaction <br/>
+                Nurse Recruitment and Retention <br/>
+                Managing Budget <br/>
+                Staff CEU’s <br/>
+                Teams have good relationships/Collaborative <br/><br/>
+                <div style="padding-left:50pt;font-size:11px;">
+                    <ul>
+                        <li>Organize Service Line Management of inpatient and outpatient clinical services centered on specialized service lines. </li>
+                        <li>Develop Annual Service Line business Plan: Plan should be developed and aimed at attaining the goals set forth in the business strategy. </li>
+                        <li>Conduct Service Line Audits: Identify areas of strengths and vulnerability, identify drivers of marginal performance and determine turn around strategies. </li>
+                        <li>Direct, coordinate and manage Perioperative patient care services.  </li>
+                        <li>Assures leadership coverage of patient care unit, quality of care, patient safety and coordination of care. </li>
+                        <li>Provides leadership or expertise for projects or program development within the organization.  </li>
+                        <li>Maintains up-todate knowledge of current health care trends and standardization of care. </li>
+                        <li>Provides public or professional presentations on programs or services.  </li>
+                        <li>Serves in a leadership role for hospital regulatory compliance. </li>
+                        <li>Coordinates the recruiting, selection, orientation, performance evaluation and continuing education of patient care and support staff to meet all the mandatory education and competency requirements. </li>
+                        <li>Maintains current knowledge of leadership/management principles through educational offerings and reading management journals. </li>
+                        <li>Ensures that adequate and appropriate equipment and supplies are readily available for staff to properly care for patients.  </li>
+                        <li>Initiates and coordinates the purchase of large capital equipment for the nursing division. (ex: purchaseof beds, defibrillator etc.) </li>
+                        <li>Provides interpretation and rationale for hospital policies and procedures for personnel, physicians and others. </li>
+                        <li>Actions support compliance to policies and procedures. Assumes leadership position in the revision of policy/procedure manuals to meet caregiver needs.</li>
+                    </ul> 
+                </div>
+            </div>	
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamPerioperative}">
+            <div> 
+                <table width="100%" cellpadding="5px">
+                    <tr width="100%">
+                        <td width="50%">
+                            <b>Market/Brand</b>
+                            <ul>
+                                <li>Clinical Outcomes</li>	
+                                <li>Patient Satisfaction</li> 
+                            </ul>
+                        </td>
+                        <td width="50%">    
+                            <b>Organization and People</b>
+                            <ul>
+                                <li>Staff Retention and Recruitment</li> 
+                                <li>Collaboration with Surgeons</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">    
+                            <b>Finance and Risk</b>
+                            <ul>
+                                <li>Budgets</li>
+                                <li>Pay for Performance Metrics 
+                                    <ul >
+                                        <li type="circle">Patient Experience</li>
+                                        <li type="circle">Surgical Site infection</li>
+                                        <li type="circle">"Never Events" - wrong site surgery etc.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>	
+                        <td width="50%">    
+                            <b>Operational Quality</b>
+                            <ul>										
+                                <li>Case Load</li> 
+                                <li>OR Efficiency</li> 
+                                <li>Clinical Integration Initiatives
+                                    <ul>
+                                        <li type="circle">Procedure standardization</li>
+                                    </ul>
+                                </li> 
+                                
+                            </ul>
+                        </td>
+                    </tr>
+                </table>	
+            </div>
+            
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamSurgeon}">
+            <div  >
+                <ul>
+                    <li>Hospital strategic goals and metrics, revenue, expense, penalties </li>
+                    <li>Patient outcomes and satisfaction, procedure load, referrals,reimbursement, surgery/block time, nursing/tech staff</li> 
+                </ul>
+            </div>	
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!profileName == $Label.SamHealthCare}">
+            <div  > 
+                <ul>
+                    <li>Immediate or short term cost reduction by ‘X’ % </li>
+                    <li>Unlocking value within supply chain (beyond line item price reduction); vendor/SKU consolidations, product standardization</li>
+                    <li>Re-processing</li>
+                    <li>Supplier diversity</li>
+                    <li>Establishing/streamlining their CSC</li>
+                    <li>Access to data</li>
+                    <li>Increased control of purchasing decisions</li>
+                    <li>Product outcomes/evidence/claims </li>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        
+    </apex:pageBlockSection>  
+    
+</apex:component>

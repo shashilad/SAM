@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Activity Optimizer</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <description>This application was developed by Sales Optimizer to allow organizations to effectively coach and manage their users based on the types of activities they are performing on a day to day basis.</description>
+    <namespacePrefix>aos</namespacePrefix>
+    <types>
+        <members>activityManager</members>
+        <members>testTriggers</members>
+        <members>testUserManager</members>
+        <members>userManager</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>ActivitiesTab</members>
+        <members>ActivityOptimizerHelp</members>
+        <members>ManageUsers</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>forceOneSystem</members>
+        <members>updatePointsEvent</members>
+        <members>updatePointsTask</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>Activity_Optimizer</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Activity.Activity_Optimizer_System__c</members>
+        <members>Activity.Activity_Type__c</members>
+        <members>Activity.Hours__c</members>
+        <members>Activity.Minutes__c</members>
+        <members>Activity.Value__c</members>
+        <members>Activity_Optimizer_Role__c.Activity_Optimizer_System__c</members>
+        <members>Activity_Optimizer_Role__c.Email__c</members>
+        <members>Activity_Optimizer_Role__c.Phone__c</members>
+        <members>Activity_Optimizer_Role__c.Role__c</members>
+        <members>Activity_Optimizer_Role__c.User__c</members>
+        <members>Activity_Optimizer_System__c.Description__c</members>
+        <members>Optimized_Activity__c.Activity_Optimizer_System__c</members>
+        <members>Optimized_Activity__c.Ignore_Time__c</members>
+        <members>Optimized_Activity__c.Points_Per_Hour__c</members>
+        <members>Optimized_Activity__c.Points_Per_Minute__c</members>
+        <members>Optimized_Activity__c.Type__c</members>
+        <members>tmpUser__c.Users__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Activity_Optimizer_Role__c</members>
+        <members>Activity_Optimizer_System__c</members>
+        <members>Optimized_Activity__c</members>
+        <members>tmpUser__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Activities</members>
+        <members>Activity_Optimizer_System__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Activity_Optimizer</members>
+        <members>Activity_Optimizer/Activity_Optimizer</members>
+        <name>Dashboard</name>
+    </types>
+    <types>
+        <members>Activity_Optimizer_Documents</members>
+        <name>Document</name>
+    </types>
+    <types>
+        <members>Activity_Optimizer_Role__c-Activity Optimizer Role Layout</members>
+        <members>Activity_Optimizer_System__c-Activity Optimizer System Layout</members>
+        <members>Event-Activity Optimizer Event Layout</members>
+        <members>Optimized_Activity__c-Optimized Activity Layout</members>
+        <members>Task-Activity Optimizer Task Layout</members>
+        <members>tmpUser__c-tmpUser Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Activity.A1_My_Open_Tasks</members>
+        <members>Activity.A2_My_Upcoming_Events</members>
+        <members>Activity.A3_My_Tasks_Needing_Optimization</members>
+        <members>Activity.A4_My_Events_Needing_Optimization</members>
+        <members>Activity.A5_Today_s_Tasks</members>
+        <members>Activity.A6_Today_s_Events</members>
+        <members>Activity.A7_My_Emails_to_Salesforce_This_Week</members>
+        <members>Activity.A8_My_Unresolved_Emails_to_Salesforce</members>
+        <members>Activity_Optimizer_System__c.All_Systems</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>Optimized_Activity_Reports</members>
+        <members>Optimized_Activity_Reports/A1_My_Optimized_Activities_Last_Week</members>
+        <members>Optimized_Activity_Reports/A2_My_Optimized_Activities_This_Week</members>
+        <members>Optimized_Activity_Reports/A3_My_Optimized_Activities_This_Month</members>
+        <members>Optimized_Activity_Reports/Activity_Optimizer_System_Types</members>
+        <members>Optimized_Activity_Reports/Activity_Optimizer_Systems_Users</members>
+        <members>Optimized_Activity_Reports/M1_My_Team_s_Activities_Last_7_Days</members>
+        <members>Optimized_Activity_Reports/M2_My_Team_s_Activities_This_Week</members>
+        <members>Optimized_Activity_Reports/M3_My_Team_s_Activities_This_Month</members>
+        <members>Optimized_Activity_Reports/M4_All_Activities_by_Optimizer_System</members>
+        <members>Optimized_Activity_Reports/M5_All_Optimized_Activities_by_Type</members>
+        <members>Optimized_Activity_Reports/M6_Scheduled_Activities_by_Type</members>
+        <name>Report</name>
+    </types>
+    <types>
+        <members>Activity_Optimizer_Activities</members>
+        <name>ReportType</name>
+    </types>
+    <types>
+        <members>Activity_Optimizer_System__c.Manage_Users</members>
+        <name>WebLink</name>
+    </types>
+    <version>35.0</version>
+</Package>

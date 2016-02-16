@@ -1,0 +1,1218 @@
+<apex:page controller="ObjectivesMBOController" 
+           sidebar="false" 
+           applyBodyTag="false" 
+           showHeader="true">
+<!-- Renamed from ObjectivesPage -->
+
+<apex:includeScript value="/support/console/27.0/integration.js"/>
+<apex:includeScript value="/soap/ajax/27.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/27.0/apex.js"/>
+
+<style>
+
+  #thePage{
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-size: 0.80em;
+    /*min-width: 700px;*/
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .mainTable{
+    overflow: hidden;
+    white-space: nowrap;
+    width:100%;
+    /*min-width: 500px;*/
+  }
+
+  .mainCell{
+    width:50%;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .quarterStyle{
+    width:50%;
+    white-space: nowrap;
+    overflow:hidden;
+  }
+
+  .majorCol{
+    /*min-width:60px;*/
+    white-space: nowrap;
+    overflow:hidden;
+  }
+
+  .picklists{
+    padding: 5px 0px 5px 0px;
+  }
+
+  .variance{
+    /*background-color: #f3f1e2;*/
+  }
+
+</style>
+
+<script>
+
+  /* one function :*/
+  function testQuery(){
+    refreshMBOPicklist(
+      document.getElementById("regions").options[document.getElementById("regions").selectedIndex].value
+    );
+  }
+
+</script>
+
+<body id="body" style="min-width:1024px">
+
+<apex:form id="form" style="min-width:600px">
+<apex:pageBlock id="block">
+  <table>
+    
+    <tr>
+      <td class="picklists">
+        <h1 style="color:#000000; font-size:1.3em" class="mainTitle">
+          Objectives
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <td class="picklists">
+        
+        <apex:outputLabel value="Filter by Region: " />&nbsp;&nbsp;
+      
+      </td>
+      <td class="picklists">
+        
+        <apex:actionFunction name="refreshMBOPicklist"
+                     action="{!regionQuery}"
+                     rerender="MBOPicklist, results, results2" 
+                     status="loadingMBOPicklist">
+          <apex:param name="regions" value=""/>
+        </apex:actionFunction>
+        
+        <select id="regions" onchange="testQuery();">
+          <option value="">All Regions</option>
+          <apex:repeat value="{!RegionPicklistValues}" var="r">
+            <option value="{!r}">{!r}</option>
+          </apex:repeat>
+        </select>
+
+        <apex:actionStatus id="loadingMBOPicklist">
+          <apex:facet name="start">
+            <apex:image value="{!$Resource.loadingArrowRed}" />
+          </apex:facet>
+          <apex:facet name="stop">
+          </apex:facet>
+        </apex:actionStatus>
+
+      </td>
+    </tr>
+    <tr>
+      <td class="picklists">
+        
+        <apex:outputLabel value="Filter by MBO: " />
+      
+      </td>
+      <td class="picklists">
+        
+        <apex:actionFunction name="limitMastObj"    
+                     action="{!runQuery}"
+                     rerender="results, results2" 
+                     status="loadingMBO">
+        </apex:actionFunction>
+        <apex:outputPanel id="MBOPicklist" layout="block">
+          <apex:selectList id="chooseMBO" onchange="limitMastObj()" value="{!limitMBO}" size="1">
+            <apex:selectOptions value="{!MastObjPickListValues}" />
+          </apex:selectList>
+          <apex:actionStatus id="loadingMBO">
+            <apex:facet name="start">
+              <apex:image value="{!$Resource.loadingArrowRed}" />
+            </apex:facet>
+            <apex:facet name="stop">
+            </apex:facet>
+          </apex:actionStatus>
+        </apex:outputPanel>
+      
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="picklists">
+
+        <apex:outputLabel value="Select Period: " />
+      
+      </td>
+      <td class="picklists">
+      
+        <apex:actionFunction name="hideQuarterDivs"
+                     action="{!hideQuarterDivs}"
+                     rerender="results, results2"
+                     status="loadingQ">
+        </apex:actionFunction>
+       
+        <apex:selectList id="chooseQuarter" onchange="hideQuarterDivs();" value="{!quarter}" size="1">
+          <apex:selectOptions value="{!QuarterPicklist}" />
+        </apex:selectList>
+        <apex:actionStatus id="loadingQ">
+          <apex:facet name="start">
+            <apex:image value="{!$Resource.loadingArrowRed}" />
+          </apex:facet>
+          <apex:facet name="stop">
+          </apex:facet>
+        </apex:actionStatus>
+      </td>
+    </tr>
+
+  </table>
+</apex:pageBlock>
+</apex:form>
+
+
+<!-- ============================ FIRST SECTION =========================== -->
+
+<apex:outputPanel styleClass="tableContainer" id="results" layout="block">
+<div id="sales" style="{!salesDiv}">
+<apex:form styleClass="myWholePage">
+<apex:pageBlock mode="edit" id="block">
+
+<table style="padding:5px;width:100%">
+  
+  <td width="20%">
+    <h1 style="color:#000000; font-size:1.3em" class="mainTitle">
+      Sales
+    </h1>
+  </td>
+
+</table>
+
+
+<table class="mainTable">
+  <tr>
+    <td class="mainCell">
+      <apex:pageBlockTable value="{!salesObjectives}" var="objective" rowClasses="odd,even">
+
+        <!-- 1 -->
+        <apex:column styleClass="minorCol">
+          <apex:facet name="header">
+            <apex:actionStatus id="idStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="ID{!IF(sortField=='Name',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="idStatus" 
+                                  rerender="results,results2"
+                                  style="{!IF(sortField=='Name',IF(sortDir='asc','color:#ef3333','color:green'),'')}">
+                  <apex:param name="Name" value="Name" assignTo="{!sortField}"/>
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+          <apex:commandLink value="{!objective.Name}" action="/{!objective.Id}">
+          </apex:commandLink>
+        </apex:column>
+
+        <!-- 2 -->
+        <apex:column styleClass="minorCol" value="{!Objective.JJHCS_TEMP__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="jjhcsStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="JJHCS #{!IF(sortField=='JJHCS_TEMP__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="jjhcsStatus" 
+                                  rerender="results, results2"
+                                  style="{!IF(sortField=='JJHCS_TEMP__c',IF(sortDir='asc','color:#ef3333','color:green'),'')}">
+                  <apex:param name="JJHCS_TEMP__c" value="JJHCS_TEMP__c" assignTo="{!sortField}"/>
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+        <!-- 3 -->
+        <apex:column styleClass="majorCol" value="{!Objective.AccountName__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="accountStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="Account Name{!IF(sortField=='AccountName__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="accountStatus" 
+                                  rerender="results,results2"
+                                  style="{!IF(sortField=='AccountName__c',IF(sortDir='asc','color:#ef3333','color:green'),'')};">
+                  <apex:param name="AccountName__c" value="AccountName__c" assignTo="{!sortField}" />
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+        <!-- 4 -->
+        <apex:column styleClass="majorCol" value="{!Objective.District_Manager__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="dmStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="District Manager{!IF(sortField=='District_Manager__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="dmStatus" 
+                                  rerender="results,results2"
+                                  style="{!IF(sortField=='District_Manager__c',IF(sortDir='asc','color:#ef3333','color:green'),'')}">
+                  <apex:param name="District_Manager__c" value="District_Manager__c" assignTo="{!sortField}"/>
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+            <apex:facet name="footer">
+              .
+            </apex:facet>
+          </apex:facet>
+        </apex:column>
+
+        <!-- 5 -->
+        <apex:column styleClass="majorCol" value="{!Objective.ISR__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="ISRStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="Inside Sales Rep{!IF(sortField=='Field_Rep__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="ISRStatus" 
+                                  rerender="results,results2"
+                                  style="{!IF(sortField=='Field_Rep__c',IF(sortDir='asc','color:#ef3333','color:green'),'')};">
+                  <apex:param name="ISR__c" value="ISR__c" assignTo="{!sortField}" />
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+        <!-- 6 -->
+        <apex:column styleClass="majorCol" value="{!Objective.Field_Rep__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="fieldRepStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="Field Rep{!IF(sortField=='Field_Rep__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="fieldRepStatus" 
+                                  rerender="results,results2"
+                                  style="{!IF(sortField=='Field_Rep__c',IF(sortDir='asc','color:#ef3333','color:green'),'')};">
+                  <apex:param name="Field_Rep__c" value="Field_Rep__c" assignTo="{!sortField}" />
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+      </apex:pageBlockTable>
+
+    </td>
+    <td class="quarterStyle">
+
+      <div id="salesQ1" style="{!q1Div}">
+
+        <apex:pageBlockTable title="Q1" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!salesObjectives}" 
+                             var="objective">
+
+          <apex:column styleClass="smallColumns" value="{!objective.Jan__c}">
+            <apex:facet name="header">
+              Jan
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.Feb__c}">
+            <apex:facet name="header">
+              Feb
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.Mar__c}">
+            <apex:facet name="header">
+              Mar
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ1_Sales__c}">
+            <apex:facet name="header">
+              Q1 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q1Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.Q1_Target__c}">
+            <apex:facet name="header">
+              Q1 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q1SalesTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!objective.Q1_Var__c}">
+            <apex:facet name="header">
+              Q1 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q1SalesVarStyle}" action="/{!limitMBO}">
+                <span>{!q1SalesVar}</span>
+              </apex:commandLink> 
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="salesQ2" style="{!q2Div}">
+
+        <apex:pageBlockTable title="Q2" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!salesObjectives}" 
+                             var="objective">
+          <apex:column styleClass="smallColumns" value="{!objective.Apr__c}">
+            <apex:facet name="header">
+              Apr
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.May__c}">
+            <apex:facet name="header">
+              May
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.Jun__c}">
+            <apex:facet name="header">
+              Jun
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ2_Sales__c}">
+            <apex:facet name="header">
+              Q2 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q2Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.Q2_Target__c}">
+            <apex:facet name="header">
+              Q2 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q2SalesTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!objective.Q2_Var__c}">
+            <apex:facet name="header">
+              Q2 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q2SalesVarStyle}" action="/{!limitMBO}">
+                <span>{!q2SalesVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="salesH1" style="{!h1Div}">
+
+        <apex:pageBlockTable title="H1" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!salesObjectives}" 
+                             var="objective">
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ1_Sales__c}">
+            <apex:facet name="header">
+              Q1 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q1Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.fQ2_Sales__c}">
+            <apex:facet name="header">
+              Q2 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q2Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.H1_Sales__c}">
+            <apex:facet name="header">
+              H1 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!h1Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.H1_Target__c}">
+            <apex:facet name="header">
+              H1 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!h1SalesTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!objective.H1_Var__c}">
+            <apex:facet name="header">
+              H1 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!h1SalesVarStyle}" action="/{!limitMBO}">
+                <span>{!h1SalesVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="salesQ3" style="{!q3Div}">
+
+        <apex:pageBlockTable title="Q3" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!salesObjectives}" 
+                             var="objective">
+
+          <apex:column styleClass="smallColumns" value="{!objective.Jul__c}">
+            <apex:facet name="header">
+              Jul
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.Aug__c}">
+            <apex:facet name="header">
+              Aug
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.Sep__c}">
+            <apex:facet name="header">
+              Sep
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ3_Sales__c}">
+            <apex:facet name="header">
+              Q3 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q3Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.Q3_Target__c}">
+            <apex:facet name="header">
+              Q3 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q3SalesTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!objective.Q3_Var__c}">
+            <apex:facet name="header">
+              Q3 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q3SalesVarStyle}" action="/{!limitMBO}">
+                <span>{!q3SalesVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="salesQ4" style="{!q4Div}">
+
+        <apex:pageBlockTable title="Q4" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!salesObjectives}" 
+                             var="objective">
+
+          <apex:column styleClass="smallColumns" value="{!objective.Oct__c}">
+            <apex:facet name="header">
+              Oct
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.Nov__c}">
+            <apex:facet name="header">
+              Nov
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.Dec__c}">
+            <apex:facet name="header">
+              Dec
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ4_Sales__c}">
+            <apex:facet name="header">
+              Q4 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q3Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.Q4_Target__c}">
+            <apex:facet name="header">
+              Q4 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q4SalesTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!objective.Q4_Var__c}">
+            <apex:facet name="header">
+              Q4 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q4SalesVarStyle}" action="/{!limitMBO}">
+                <span>{!q4SalesVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+          
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="salesH2" style="{!h2Div}">
+
+        <apex:pageBlockTable title="H2" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!salesObjectives}" 
+                             var="objective">
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ3_Sales__c}">
+            <apex:facet name="header">
+              Q3 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q3Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.fQ4_Sales__c}">
+            <apex:facet name="header">
+              Q4 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q4Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.H2_Sales__c}">
+            <apex:facet name="header">
+              H2 Sales
+            </apex:facet>
+            <apex:facet name="footer">
+              {!h2Sales}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.H2_Target__c}">
+            <apex:facet name="header">
+              H2 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!h2SalesTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!objective.H2_Var__c}">
+            <apex:facet name="header">
+              H2 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                <span style="{!h2SalesVarStyle}">{!h2SalesVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+    </td>
+  </tr>
+</table>
+
+</apex:pageBlock> 
+</apex:form>
+</div>
+</apex:outputPanel>
+
+
+<!-- =========================== SECOND SECTION =========================== -->
+
+<apex:outputPanel styleClass="tableContainer" id="results2" layout="block">
+<div id="lui" style="{!luiDiv}">
+<apex:form styleClass="myWholePage">
+
+<apex:pageBlock mode="edit" id="block">      
+
+<table style="padding:5px;width:50%">
+  <tr>
+    <td width="20%">
+      <h1 style="color:#000000; font-size:1.3em" class="mainTitle">
+        Leads, Upgrades, and Installations
+      </h1>
+    </td>
+  </tr>
+</table>
+
+<table class="mainTable">
+  <tr>
+    <td class="mainCell">
+      <apex:pageBlockTable value="{!luiObjectives}" var="objective">
+
+        <!-- 1 -->
+        <apex:column styleClass="minorCol">
+          <apex:facet name="header">
+            <apex:actionStatus id="idStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="ID{!IF(sortField=='Name',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="idStatus" 
+                                  rerender="results, results2"
+                                  style="{!IF(sortField=='Name',IF(sortDir='asc','color:#ef3333','color:green'),'')}">
+                  <apex:param name="Name" value="Name" assignTo="{!sortField}"/>
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>  
+          <apex:commandLink value="{!objective.Name}" action="/{!objective.Id}">
+          </apex:commandLink>
+        </apex:column>
+
+        <!-- 2 -->
+        <apex:column styleClass="minorCol" value="{!objective.JJHCS_TEMP__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="jjhcsStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="JJHCS #{!IF(sortField=='JJHCS_TEMP__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="jjhcsStatus" 
+                                  rerender="results, results2"
+                                  style="{!IF(sortField=='JJHCS_TEMP__c',IF(sortDir='asc','color:#ef3333','color:green'),'')}">
+                  <apex:param name="JJHCS_TEMP__c" value="JJHCS_TEMP__c" assignTo="{!sortField}"/>
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+        <!-- 3 -->
+        <apex:column styleClass="majorCol" value="{!objective.AccountName__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="accountStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="Account Name{!IF(sortField=='AccountName__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="accountStatus" 
+                                  rerender="results, results2"
+                                  style="{!IF(sortField=='AccountName__c',IF(sortDir='asc','color:#ef3333','color:green'),'')}">
+                  <apex:param name="AccountName__c" value="AccountName__c" assignTo="{!sortField}" />
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+        <!-- 4 -->
+        <apex:column styleClass="majorCol" value="{!objective.District_Manager__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="dmStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="District Manager{!IF(sortField=='District_Manager__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="dmStatus" 
+                                  rerender="results, results2"
+                                  style="{!IF(sortField=='District_Manager__c',IF(sortDir='asc','color:#ef3333','color:green'),'')}">
+                  <apex:param name="District_Manager__c" value="District_Manager__c" assignTo="{!sortField}"/>
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+          <apex:facet name="footer">
+            .
+          </apex:facet>
+        </apex:column>
+
+        <!-- 5 -->
+        <apex:column styleClass="majorCol" value="{!Objective.ISR__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="ISRStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="Inside Sales Rep{!IF(sortField=='Field_Rep__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="ISRStatus" 
+                                  rerender="results,results2"
+                                  style="{!IF(sortField=='Field_Rep__c',IF(sortDir='asc','color:#ef3333','color:green'),'')};">
+                  <apex:param name="ISR__c" value="ISR__c" assignTo="{!sortField}" />
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+        <!-- 6 -->
+        <apex:column styleClass="majorCol" value="{!Objective.Field_Rep__c}">
+          <apex:facet name="header">
+            <apex:actionStatus id="fieldRepStatus">
+              <apex:facet name="start">
+                <apex:image value="{!$Resource.loadingArrowRed}" />
+              </apex:facet>
+              <apex:facet name="stop">
+                <apex:commandLink value="Field Rep{!IF(sortField=='Field_Rep__c',IF(sortDir='asc', '▲', '▼'), '')}" 
+                                  action="{!toggleSort}" 
+                                  status="fieldRepStatus" 
+                                  rerender="results,results2"
+                                  style="{!IF(sortField=='Field_Rep__c',IF(sortDir='asc','color:#ef3333','color:green'),'')};">
+                  <apex:param name="Field_Rep__c" value="Field_Rep__c" assignTo="{!sortField}" />
+                </apex:commandLink>
+              </apex:facet>
+            </apex:actionStatus>
+          </apex:facet>
+        </apex:column>
+
+      </apex:pageBlockTable>
+
+    </td>
+    <td class="quarterStyle">
+      
+      <div id="luiQ1" style="{!q1Div}">
+        
+        <apex:pageBlockTable title="Q1" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!luiObjectives}" 
+                             var="objective">
+
+          <apex:column styleClass="smallColumns" value="{!objective.fJan_Status__c}">
+            <apex:facet name="header">
+              Jan
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fFeb_Status__c}">
+            <apex:facet name="header">
+              Feb
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fMar_Status__c}">
+            <apex:facet name="header">
+              Mar
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ1_Status__c}">
+            <apex:facet name="header">
+              Q1
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q1LuiAct}
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q1 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q1LuiTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q1 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q1LuiVarStyle}" action="/{!limitMBO}">
+                <span>{!q1LuiVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+      
+      </div>
+
+      <div id="luiQ2" style="{!q2Div}">
+
+        <apex:pageBlockTable title="Q2" 
+                           styleClass="floatingHeaderTable" 
+                           value="{!luiObjectives}" 
+                           var="objective">
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fApr_Status__c}">
+            <apex:facet name="header">
+              Apr
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fMay_Status__c}">
+            <apex:facet name="header">
+              May
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fJun_Status__c}">
+            <apex:facet name="header">
+              Jun
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ2_Status__c}">
+            <apex:facet name="header">
+              Q2
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q2LuiAct}
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q2 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q2LuiTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q2 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q2LuiVarStyle}" action="/{!limitMBO}">
+                <span>{!q2LuiVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="luiH1" style="{!h1Div}">
+
+        <apex:pageBlockTable title="H1" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!luiObjectives}" 
+                             var="objective">
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ1_Status__c}">
+            <apex:facet name="header">
+              Q1
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q1LuiAct}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.fQ2_Status__c}">
+            <apex:facet name="header">
+              Q2
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q2LuiAct}
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              H1 Actual
+            </apex:facet>
+            <apex:facet name="footer">
+              {!h1LuiAct}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              H1 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!h1LuiTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!blankThing}">
+            <apex:facet name="header">
+              H1 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!H1LuiVarStyle}" action="/{!limitMBO}">
+                <span>{!H1LuiVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="luiQ3" style="{!q3Div}">
+
+        <apex:pageBlockTable title="Q3" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!luiObjectives}" 
+                             var="objective">
+
+          <apex:column styleClass="smallColumns" value="{!objective.fJul_Status__c}">
+            <apex:facet name="header">
+              Jul
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fAug_Status__c}">
+            <apex:facet name="header">
+              Aug
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fSep_Status__c}">
+            <apex:facet name="header">
+              Sep
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ3_Status__c}">
+            <apex:facet name="header">
+              Q3
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q3LuiAct}
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q3 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q3LuiTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q3 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q3LuiVarStyle}" action="/{!limitMBO}">
+                <span>{!q3LuiVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="luiQ4" style="{!q4Div}">
+
+        <apex:pageBlockTable title="Q4" 
+                           styleClass="floatingHeaderTable" 
+                           value="{!luiObjectives}" 
+                           var="objective">
+
+          <apex:column styleClass="smallColumns" value="{!objective.fOct_Status__c}">
+            <apex:facet name="header">
+              Oct
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fNov_Status__c}">
+            <apex:facet name="header">
+              Nov
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="smallColumns" value="{!objective.fDec_Status__c}">
+            <apex:facet name="header">
+              Dec
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ4_Status__c}">
+            <apex:facet name="header">
+              Q4
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q4LuiAct}
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q4 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!q4LuiTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              Q4 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!q4LuiVarStyle}" action="/{!limitMBO}">
+                <span>{!q4LuiVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+      <div id="luiH2" style="{!h2Div}">
+
+        <apex:pageBlockTable title="H2" 
+                             styleClass="floatingHeaderTable" 
+                             value="{!luiObjectives}" 
+                             var="objective">
+          
+          <apex:column styleClass="quarter" value="{!objective.fQ3_Status__c}">
+            <apex:facet name="header">
+              Q3
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q3LuiAct}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!objective.fQ4_Status__c}">
+            <apex:facet name="header">
+              Q4
+            </apex:facet>
+            <apex:facet name="footer">
+              {!q4LuiAct}
+            </apex:facet>
+          </apex:column>
+          
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              H2 Actual
+            </apex:facet>
+            <apex:facet name="footer">
+              {!h2LuiAct}
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="quarter" value="{!blankThing}">
+            <apex:facet name="header">
+              H2 Target
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink action="/{!limitMBO}">
+                {!h2LuiTar}
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+          <apex:column styleClass="variance" value="{!blankThing}">
+            <apex:facet name="header">
+              H2 Variance
+            </apex:facet>
+            <apex:facet name="footer">
+              <apex:commandLink style="{!H2LuiVarStyle}" action="/{!limitMBO}">
+                <span>{!H2LuiVar}</span>
+              </apex:commandLink>
+            </apex:facet>
+          </apex:column>
+
+        </apex:pageBlockTable>
+
+      </div>
+
+    </td>
+  </tr>
+</table>
+
+</apex:pageBlock> 
+</apex:form>
+</div>
+</apex:outputPanel>
+
+</body>
+
+</apex:page>

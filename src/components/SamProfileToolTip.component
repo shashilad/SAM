@@ -1,0 +1,57 @@
+<apex:component selfClosing="true">
+
+<div class="mouseOverInfoOuter" id="searchInvoiceHelper" onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)" tabindex="0">
+    <img src="/s.gif" alt="" class="infoIcon" title="" />
+    <div class="mouseOverInfo" id="searchInvoiceHelperText" style="display: none; opacity: -0.19999999999999996; left: 16px;">
+        <div class="body">
+                         	   <table border="1px;">
+                            	   		<tr>
+                            	   			<td class="profName">ACO	</td>
+                            	   			<td>Administrator for the ACO</td>
+                            	   		</tr>
+                			   			<tr>
+                            	   			<td class="profName">Infection Control / Prevention</td>
+                            	   			<td>Dir./VP Nursing, Risk Management, Dir./VP Infection Prevention, Chief Medical Officer, Dir/VP of Quality, Dir./VP Patient Safety</td>
+                            	   		</tr>
+                			   			<tr>
+                            	   			<td class="profName">Managed Markets / Payer Relations</td>
+                            	   			<td>Negotiates contracts with payers (private, public insurance and direct employer contracts)</td>
+                            	   		</tr>
+                			   			<tr>
+                            	   			<td class="profName">Medical Director</td>
+                            	   			<td>CMO Profile</td>
+                            	   		</tr>
+                			   			<tr>
+                            	   			<td class="profName">Nursing</td>
+                            	   			<td>Charged with ensuring that patient-care, clinical and staffing standards are met.</td>
+                            	   		</tr>
+         			   					<tr>
+                            	   			<td class="profName">Quality</td>
+                            	   			<td>Service Line Lead, CNO/VP of Nursing, CMO, Chief Quality Officer, CEO of physician groups</td>
+                            	   		</tr>
+                   			   			<tr>
+                            	   			<td class="profName">Patient Exp/Satisfaction</td>
+                            	   			<td>Patient Experience and Satisfaction</td>
+                            	   		</tr>
+                   			   			<tr>
+                            	   			<td class="profName">Perioperative Services</td>
+                            	   			<td>Manage Pre-op, OR, and Post Op areas</td>
+                            	   		</tr>
+                    			   		<!-- tr>
+                            	   			<td class="profName">Population Health</td>
+                            	   			<td>Individual working to address regional and community health initiatives</td>
+                            	   		</tr -->
+                     			   		<tr>
+                            	   			<td class="profName">Supply Chain - Healthcare</td>
+                            	   			<td>SC healthcare</td>
+                            	   		</tr>
+                     			   		<tr>
+                            	   			<td class="profName">Surgeon</td>
+                            	   			<td>Surgeons</td>
+                            	   		</tr>
+                           		</table>			
+
+		</div>
+    </div>
+</div>
+</apex:component>

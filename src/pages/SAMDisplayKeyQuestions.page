@@ -1,0 +1,54 @@
+<apex:page standardController="Stakeholder_Interview__c" 
+           extensions="SAMDisplayKeyQuestions_Controller" sidebar="false" showHeader="false"
+           tabStyle="Account">
+
+    <style>
+    	.questionPad {	padding-left: 25px;}
+        .sectionBar  {	background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; font-weight:bold; padding-bottom:5px;
+        			 }
+    
+    </style>
+    <apex:pageBlock title="{!Stakeholder_Interview__c.Profile_Type__c}">
+    	<table width="100%" >
+        	<tr>
+	            <td style="vertical-align: text-top;width:50%">
+    	        	<div width="100%" class="sectionBar"> General Questions</div>
+        	      	<apex:repeat value="{!questionList}" var="q">                        
+                        <br/>
+                        <b>{!RIGHT(q,LEN(q)-1)}</b>
+                       	<table>
+                        	<apex:repeat value="{!questionList[q]}" var="kq">
+                            	<tr>
+                                	<td style="vertical-align: text-top;">—</td>
+                                    <td style="vertical-align: text-top;"><apex:outputText value="{!kq.Question__c}" /></td>
+                                </tr>
+                         	</apex:repeat>
+                     	</table>
+            	   	</apex:repeat>
+           		</td>
+          		<td style="width:50%;vertical-align: text-top;padding-left:5px;">
+                 	<div width="100%" class="sectionBar">Role/Department Specific Questions</div>
+                    <apex:repeat value="{!keyList}" var="k">  
+                    	<br/>
+                        <b>{!RIGHT(k,LEN(k)-1)} </b> 
+                       	<table>
+                           	<div class="questionPad">
+                            	<apex:repeat value="{!keyList[k]}" var="kl">
+                                	<tr>
+                                    	<td style="vertical-align: text-top;">—</td>
+                                        <td style="vertical-align: text-top;"><apex:outputText value="{!kl.Question__c}" /></td>
+                                    </tr>
+                                </apex:repeat>
+                           	</div>
+                      	</table>
+     
+                        
+              		</apex:repeat>
+          		</td>
+         	</tr>
+     	</table> 
+    </apex:pageBlock>
+            
+ 
+
+</apex:page>

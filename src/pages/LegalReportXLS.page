@@ -1,0 +1,55 @@
+<apex:page controller="LegalReportXLS_Controller" contentType="application/vnd.ms-excel#result.xls" readOnly="true">
+ 
+    <apex:outputPanel title="" id="error">
+     <apex:pageMessages ></apex:pageMessages>
+     </apex:outputPanel>
+  	 <apex:pageBlock title="Accounts" id="acct">
+		    <apex:pageblockTable value="{!accList }" var="acc">
+		          <apex:column value="{!acc.name}"/>
+		          <apex:column value="{!acc.CreatedDate}"/>
+		          <apex:column value="{!acc.Lastmodifieddate}"/>
+		          <apex:column value="{!acc.Next_Step__c}"/>
+		          <apex:column value="{!acc.BillingStreet}"/>
+		          <apex:column value="{!acc.Description}"/>
+		          <apex:column value="{!acc.Additional_Facility_Info__c}"/>
+		       </apex:pageblockTable>
+		 </apex:pageBlock>
+		 
+		 <apex:pageBlock title="Contacts" id="cont">
+		    <apex:pageblockTable value="{!conList}" var="con">
+		      <apex:column value="{!con.name}"/>
+		      <apex:column value="{!con.title}"/>
+		      <apex:column value="{!con.Title__c}"/>
+		      <apex:column value="{!con.CreatedDate}"/>
+		      <apex:column value="{!con.Lastmodifieddate}"/>
+		      <apex:column value="{!con.MobilePhone}"/>
+		      <apex:column value="{!con.GM_Reference__c}"/>
+		      <apex:column value="{!con.mailingstreet}"/>
+		      <apex:column value="{!con.Department}"/>
+		      <apex:column value="{!con.NOTES_TXT__c}"/>
+		      <apex:column value="{!con.Description}"/>
+		 </apex:pageblockTable>
+		 </apex:pageBlock>
+		  
+		 <apex:pageBlock title="Opportunities" id="oppt">
+		    <apex:pageblockTable value="{!optyList}" var="opty">
+		         <apex:column value="{!opty.name}"/>
+		         <apex:column value="{!opty.StageName}"/>
+		         <apex:column value="{!opty.Createddate}"/>
+		         <apex:column value="{!opty.LastmodifiedDate}"/>
+		         <apex:column value="{!opty.Rep_Comments__c}"/>
+		         <apex:column value="{!opty.NextStep}"/>
+	      	     <apex:column value="{!opty.Description}"/>
+		    </apex:pageblockTable>
+		 </apex:pageBlock>
+		 <apex:pageBlock title="Objectives" id="objt">
+		    <apex:pageblockTable value="{!objectiveList}" var="objt">
+		         <apex:column value="{!objt.name}"/>
+		         <apex:column value="{!objt.Createddate}"/>
+		         <apex:column value="{!objt.LastmodifiedDate}"/>
+	      	     <apex:column value="{!objt.MBO__c}"/>
+		    </apex:pageblockTable>
+		 </apex:pageBlock>
+  	
+
+</apex:page>

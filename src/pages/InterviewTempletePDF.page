@@ -1,0 +1,160 @@
+<apex:page standardController="Stakeholder_Interview__c" 
+           extensions="InterviewTempletePDF_Controller,SAMDisplayKeyQuestions_Controller" 
+           standardStylesheets="false" 
+           applyHtmlTag="false" 
+           showHeader="false" 
+           renderAs="{!IF(isWordDoc=='1','','pdf')}"
+           contentType="{!IF(isWordDoc=='1','application/msword#Template.doc','')}" 
+           cache="true">
+    
+    <html xmlns:w="{!IF(isWordDoc=='1','urn:schemas-microsoft-com:office:word','')}">
+        
+        <meta http-equiv="Content-Type" 
+              content="text/html; charset=utf-8" /> 
+        
+        <head>
+            <style>
+                .questionPad {padding-left: 25px;}
+            </style>    
+        </head>
+        
+        
+        <body>
+            
+            
+            <!-- apex:outputText value="{!WordPrintViewXML}" 
+escape="false" 
+rendered="{!isWordDoc=='1'}" / -->
+            
+            
+            
+            <apex:outputPanel rendered="{!spName==null}">
+                <left>
+                    <b>
+                        <table>
+                            <tr>
+                                <td>
+                                    Interview Title :
+                                </td>
+                                <td style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;">
+                                    {!Stakeholder_Interview__c.Name}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Contact Name :
+                                </td>
+                                <td style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;">
+                                    {!Stakeholder_Interview__c.Contact_Name__r.Name}
+                                </td>
+                            </tr>
+                        </table>  
+                    </b>
+                </left>
+            </apex:outputPanel>    
+            
+            
+            
+            <apex:outputPanel rendered="{!spName!=null}" 
+                              style="font-family:Arial,Helvetica,sans-serif;">
+                <h2>
+                    {!spName}
+                </h2>
+            </apex:outputPanel>
+            
+            
+            
+            <apex:pageBlock >
+                <c:SAMProfileTitles profileName="{!spName}" />
+                <c:SAMProfileFocusAreas profileName="{!IF(spName==null,Stakeholder_Interview__c.Profile_Type__c,spName)}" />
+                <c:SAMProfilePreMeeting profileName="{!IF(spName==null,Stakeholder_Interview__c.Profile_Type__c,spName)}" />
+            </apex:pageBlock>       
+            <br/> 
+            
+            
+            <apex:messages ></apex:messages>
+            
+            
+            <div>
+                
+                
+                <div style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; font-weight:bold; padding-bottom:5px;">
+                    General Questions 
+                </div>
+                <apex:repeat value="{!questionList}" 
+                             var="q">                        
+                    <br/>
+                    <b>{!RIGHT(q,LEN(q)-1)} </b><br/>
+                    <div class="questionPad">
+                        <table>
+                            <apex:repeat value="{!questionList[q]}" 
+                                         var="kq">
+                                <tr>
+                                    <td style="vertical-align: text-top;">
+                                        —
+                                    </td>
+                                    <td style="vertical-align: text-top;">
+                                        <apex:outputText value="{!kq.Question__c}" />
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                    </div>
+                </apex:repeat>
+                <br/><br/>
+                
+                
+                <div style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; font-weight:bold; padding-bottom:5px;">
+                    Role Specific Questions 
+                </div>
+                <apex:repeat value="{!keyList}" 
+                             var="k">  
+                    <br/>
+                    <b>{!RIGHT(k,LEN(k)-1)} </b><br/>
+                    <table>
+                        <div class="questionPad">
+                            <apex:repeat value="{!keyList[k]}" 
+                                         var="kl">
+                                <tr>
+                                    <td style="vertical-align: text-top;">
+                                        —
+                                    </td>
+                                    <td style="vertical-align: text-top;">
+                                        <apex:outputText value="{!kl.Question__c}"/>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </div>
+                    </table>
+                </apex:repeat>
+                <br/>  <br/>
+                
+                
+                <apex:outputPanel rendered="{!qItem!=null}">
+                    <div class="divHeading">
+                        Additional Questions 
+                    </div>
+                </apex:outputPanel>
+                <table>
+                    <div class="questionPad">
+                        <apex:repeat value="{!qItem}" 
+                                     var="q">
+                            <tr>
+                                <td style="vertical-align: text-top;">
+                                    —
+                                </td>
+                                <td style="vertical-align: text-top;">
+                                    <apex:outputText value="{!q.Custom_Question__c}"/>
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </div>
+                </table>
+                
+                
+            </div>
+            
+        </body>
+        
+    </html>
+</apex:page>

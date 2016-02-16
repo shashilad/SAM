@@ -1,0 +1,138 @@
+<apex:page controller="SAMGeneralInfo_Controller"
+           showHeader="false"  sidebar="false"
+           id="Page" > 
+    
+    <style>
+        .panel-default:nth-of-type(odd) > .panel-heading{ background: #E8E8E8 !important;}
+    </style>
+    
+    <apex:form id="form">
+        
+        <apex:sectionHeader title="Stakeholder Information Templates"/>
+        
+        <div id="main">
+            
+            <c:importvisualstrap theme="lumen" />
+            
+            <c:visualstrapblock >
+                
+                <apex:actionFunction name="assignVal" 
+                                     action="{!assignName}" 
+                                     reRender="modalData" />
+                
+                <div class="container">
+                    <div class="panel-group" 
+                         style="padding-left:100px;padding-right:200px;">
+                        <apex:repeat value="{!stkMaster}" 
+                                     var="stk">
+                            <div class="panel panel-default" >
+                                <div class="panel-heading" 
+                                     style="margin:0">
+                                    <h4>
+                                        {!stk.Name}
+                                        <div class="btn-toolbar" 
+                                             style="float:right;">
+                                            <button type="button" 
+                                                    style="text-transform:initial;font-size:15px;" 
+                                                    class="btn btn-link" 
+                                                    data-toggle="modal" 
+                                                    data-target="#myModal" >
+                                                <apex:commandLink action="{!assignName}" 
+                                                                  reRender="modalData,headData" 
+                                                                  immediate="true">
+                                                    <apex:param name="prName" 
+                                                                value="{!stk.Name}" 
+                                                                assignTo="{!profName}" />
+                                                    
+                                                    View
+                                                </apex:commandLink>
+                                            </button>
+                                            <button type="button" 
+                                                    class="btn btn-link" 
+                                                    style="text-transform:initial;font-size:15px;">  
+                                                <apex:commandLink onclick="window.open('/apex/interviewTempletePDF?pname={!stk.Name}&isWordDoc=1','', 'width=500, height=1');" 
+                                                                  reRender="form,modalData" >
+                                                    MS-Word <span class="glyphicon glyphicon-export" />
+                                                </apex:commandLink>
+                                            </button>
+                                            
+                                            <button type="button" 
+                                                    class="btn btn-link" 
+                                                    style="text-transform:initial;font-size:15px;">
+                                                <apex:commandLink onclick="window.open('/apex/interviewTempletePDF?pname={!stk.Name}','', 'width=800, height=600');" 
+                                                                  reRender="form,modalData" >
+                                                    PDF <span class="glyphicon glyphicon-export" />
+                                                </apex:commandLink>
+                                            </button>
+                                        </div>
+                                        <p>
+                                            <small>{!stk.ProfileText__c}</small></p>
+                                    </h4>
+                                </div> 
+                            </div>
+                        </apex:repeat>
+                    </div>
+                    <div class="modal fade" 
+                         id="myModal" 
+                         role="dialog">
+                        <div class="modal-dialog" 
+                             style="width:1000px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" 
+                                            class="close" 
+                                            data-dismiss="modal">
+                                        &times;
+                                    </button>
+                                    <apex:outputPanel id="headData" >
+                                        <h3 class="modal-title" >{!pName}</h3>
+                                        <div style="float:right;padding-left:50px;padding-right:50px;">
+                                            <apex:commandLink style="padding-right:10px;font-size:18px;"  
+                                                              onclick="window.open('/apex/interviewTempletePDF?pname={!pName}&isWordDoc=1','', 'width=500, height=1');" 
+                                                              reRender="form" >
+                                                MS-Word <span class="glyphicon glyphicon-export"  
+                                                              style="padding-left:3px;"/>
+                                            </apex:commandLink> 
+                                            <apex:commandLink style="font-size:18px;"
+                                                              onclick="window.open('/apex/interviewTempletePDF?pname={!pName}','', 'width=800, height=600');" 
+                                                              reRender="form">
+                                                PDF <span class="glyphicon glyphicon-export"  
+                                                          style="padding-left:3px;"/>
+                                            </apex:commandLink>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+                                <div class="modal-body">
+                                    <apex:outputPanel id="modalData">
+                                        <div style="padding-left:20px;padding-right:10px;">
+                                            
+                                            <apex:pageBlock >
+                                                <c:SAMProfileTitles profileName="{!pName}" />
+                                            </apex:pageBlock>
+                                            <apex:pageBlock >
+                                                <c:SAMProfileFocusAreas profileName="{!pName}"/>
+                                            </apex:pageBlock>
+                                            <apex:pageBlock >
+                                                <c:SAMProfilePreMeeting profileName="{!pName}" />
+                                            </apex:pageBlock>
+                                            <apex:pageBlock >
+                                                <apex:iframe src="/apex/samprofileInfoRes?profilename={!pName}" height="280px;" />
+                                            </apex:pageBlock>
+                                            <apex:iframe src="/apex/SAMDisplayKeyQuestions?pname={!pName}" 
+                                                         height="850px" 
+                                                         scrolling="true"/>
+                                        </div>     
+                                    </apex:outputPanel>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                
+            </c:visualstrapblock>
+            
+        </div>
+        
+    </apex:form>
+    
+</apex:page>

@@ -1,0 +1,125 @@
+<apex:page standardStylesheets="true"  
+           standardController="Stakeholder_Interview__c"
+           showHeader="true"  
+           sidebar="false"
+           id="Page" 
+           tabstyle="Account"> 
+    <html>
+        <head>
+            <apex:stylesheet value="/dCSS/Theme2/en/common.css"/>
+            <script type="text/javascript"> 
+                function openLookup(baseURL, width, modified, searchParam){
+                    var originalbaseURL = baseURL;
+                    var originalwidth = width;
+                    var originalmodified = modified;
+                    var originalsearchParam = searchParam;
+                    var aid = "{!Stakeholder_Interview__c.Account_Name__c}";
+                    var lookupType = "003";  
+                    
+                    // baseURL.substr(baseURL.length-3, 3);
+                    if (modified == '1') baseURL = baseURL + searchParam;
+                    
+                    var isCustomLookup = false;
+                    // Following "003" is the lookup type for Contact object so change this as per your standard or custom object
+                    if(lookupType == "003"){
+                        
+                        var urlArr = baseURL.split("&");
+                        var txtId = '';
+                        
+                        if(urlArr.length > 2) {
+                            urlArr = urlArr[1].split('=');
+                            txtId = urlArr[1];
+                        }
+                        
+                        // Following is the url of Custom Lookup page. You need to change that accordingly
+                        baseURL = "/apex/ContactCustomLookup?txt=" + txtId;
+                        
+                        // Following is the id of apex:form control "myForm". You need to change that accordingly
+                        baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+                        if (modified == '1') {
+                            baseURL = baseURL + "&lksearch=" + searchParam;
+                        }
+                        baseURL = baseURL + "&aid="+aid;
+                        // Following is the ID of inputField that is the lookup to be customized as custom lookup
+                        
+                        if(txtId.indexOf('Contact') > -1 ){
+                            isCustomLookup = true;
+                        }
+                    }
+                    
+                    
+                    if(isCustomLookup == true){
+                        openPopup(baseURL, "lookup", 350, 480, "width="+width+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+                    }else {
+                        if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+                        openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+                    } 
+                }
+                
+            </script> 
+            
+        </head>
+        
+        
+        
+        <body>
+            <style>
+                .sf1input, .sf1textarea{
+                width:50%;
+                font-family: 'Arial,Helvetica';
+                font-size: 12px;
+                color: #3c3d3e;
+                padding: 0px 0px;
+                line-height: 20px;
+                border: 1px solid #cfd0d2;
+                border-radius: 5px;
+                background-color: #e8eaeb;
+                box-shadow: inset 0 2px 2px rgba(0,0,0,.07);
+                margin:2px 2px 2px 2px;
+                }
+                
+                .sf1input:focus, .sf1textarea:focus {
+                border: 1px solid #bbc0c4;
+                background-color: #fff;
+                outline-style: none;
+                }
+                .sf1label {
+                font-family: 'Arial,Helvetica,sans-serif';
+                font-size: 13px;
+                color: #696e71;
+                margin: 0;
+                padding-bottom: 0px;
+                display: block;
+                min-width: 100px;
+                }
+                
+            </style>
+            
+            
+            <apex:form id="form">
+                <apex:sectionHeader title="{!Stakeholder_Interview__c.Name}"  />
+                <apex:pageBlock title="Edit Stakeholder Interview">
+                    <apex:pageBlockButtons location="top">
+                        <apex:commandButton value="Save" action="{!Save}"/>
+                        <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                    </apex:pageBlockButtons>   
+                    <div style="padding-left:200px; padding-top:30px;">   
+                        <b class="sf1label">Select Stakeholder Type </b>
+                        <apex:outputPanel styleClass="sf1input">
+                            <apex:outputField id="profType" value="{!Stakeholder_Interview__c.Profile_Type__c}"  />
+                        </apex:outputPanel> <br/><br/>
+                        <b class="sf1label">Account</b>
+                        <apex:outputPanel styleClass="sf1input">
+                            <apex:outputField id="account" value="{!Stakeholder_Interview__c.Account_Name__c}"  /><br/><br/>
+                        </apex:outputPanel>    
+                        <b class="sf1label">Contact</b>
+                        <apex:inputField styleClass="sf1input" id="Contact" value="{!Stakeholder_Interview__c.Contact_Name__c}"  /> <br/><br/>
+                        <b class="sf1label">Interview Date</b>
+                        <apex:inputField styleClass="sf1input" id="cDate" value="{!Stakeholder_Interview__c.cDate__c}"  />
+                    </div>   
+                </apex:pageBlock>   
+            </apex:form>
+            
+        </body>
+    </html>
+</apex:page>

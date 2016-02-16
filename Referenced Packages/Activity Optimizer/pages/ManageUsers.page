@@ -1,0 +1,50 @@
+<apex:page standardController="aos__Activity_Optimizer_System__c" title="Manage Activity Optimizer System Users" extensions="aos.userManager" showheader="true">
+    <apex:sectionHeader title="Manage Activity Optimizer System Users" subtitle="{!Role}"/>
+    <apex:form >
+        <apex:pageBlock title="Assign mulitple Users to {!Role}">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!Save}" value="Save"/>
+                <apex:commandButton action="{!saveReturn}" value="Save and Return"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="2">
+                <apex:outputPanel layout="block" style="width:600px">
+                    Search:&nbsp;&nbsp;
+                    <apex:actionRegion >
+                        <apex:selectList value="{!selectedRole}" disabled="{!IsEmpty}" size="1" required="false" id="roles">
+                            <apex:actionSupport action="{!loadUserList}" event="onchange" rerender="before, available" />
+                            <apex:selectOption itemValue="Unassigned" itemLabel="Unassigned"/>
+                            <apex:selectOptions value="{!Roles}"/> 
+                        </apex:selectList>
+                    </apex:actionRegion>
+                    &nbsp;&nbsp;for:&nbsp;&nbsp;
+                    <apex:inputText value="{!inputValue}" id="theTextInput"/>
+                    &nbsp;&nbsp;
+                    <apex:commandButton action="{!searchUsers}" value="Search" id="search" rerender="before" />
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="4" id="All">
+                <apex:outputPanel layout="block" style="width:250px">
+                    <b>Available Members</b><br />
+                    <apex:selectList value="{!selectedUserList}" multiselect="true" required="false" style="width:250px" id="before">
+                        <apex:selectOptions value="{!UserList}"/> 
+                    </apex:selectList>
+                    <br />
+                    <apex:outputText rendered="{!AvailableLimit}" style="font-weight:700; color:#ff0000;" value="You have more than 200 Users in the selected role. Only 200 can be managed at a time." id="available" />
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" style="padding:20px">
+                    <apex:commandButton action="{!Add}" value="Add" id="add" rerender="All, before, after, selected, available" />
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" style="width:250px">
+                        <b>Members to Add</b><br />
+                        <apex:selectList value="{!selectedUsers}" multiselect="true" required="false" style="width:250px" id="after">
+                            <apex:selectOptions value="{!Group}"/> 
+                        </apex:selectList>
+                        <br />
+                        <apex:outputText rendered="{!SelectedLimit}" style="font-weight:700; color:#ff0000;" value="You have assigned 200 Users to the {!Role} Role. Only 200 can be managed at a time." id="selected" />   
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <apex:relatedList list="Activity_Optimizer_Roles__r" pageSize="10" id="roleList" />
+</apex:page>

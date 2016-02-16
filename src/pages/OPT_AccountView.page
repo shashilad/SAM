@@ -1,0 +1,292 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" standardController="Account"
+           extensions="OPT_AccountViewController">    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+        
+        <head>
+            <meta charset="utf-8"/>
+            <apex:stylesheet value="{!URLFOR($Resource.LightningSystem, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <!-- script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script -->
+            <script>
+            var j$ = jQuery.noConflict();
+            j$(document).ready(function() {
+                j$("#data tr").click(function() {
+                    j$("#data tr").removeClass("slds-is-selected");
+                    var selected = j$(this).hasClass("slds-is-selected");
+                    if(!selected){
+                        j$(this).addClass("slds-is-selected");    	       
+                    }    
+                    j$("#updateBtn").removeClass("btn-inactive");
+                    j$("#updateBtn").addClass("btn-active");
+                    j$("#updateBtn").removeAttr('disabled');
+
+                    j$("#editBtn").removeClass("btn-inactive");
+                    j$("#editBtn").addClass("btn-active");
+                    j$("#editBtn").removeAttr('disabled');
+
+                    j$("#deleteBtn").removeClass("btn-inactive");
+                    j$("#deleteBtn").addClass("btn-active");
+                    j$("#deleteBtn").removeAttr('disabled');
+
+                    j$("#viewBtn").removeClass("btn-inactive");
+                    j$("#viewBtn").addClass("btn-active");
+                    j$("#viewBtn").removeAttr('disabled');
+                });
+                                    
+			});            
+            </script>    
+            <style>
+                .mainnav{
+                color:#fff;
+                border:none;
+                padding: 0px 15px;
+                background-color:#4D5656;
+                height: 30px;
+                bottom: 1px;
+                line-height:30px;
+                text-decoration: none;
+                font: 11pt Arial;
+                }
+                .mainnav-active{
+                color:#fff;
+                border:1px solid #1C2833;
+                padding: 0px 15px;
+                background-color:#1C2833;
+                height: 30px;
+                bottom: 1px;
+                line-height:30px;
+                text-decoration: none;
+                font: 11pt Arial;
+                }
+                
+                
+                .subnav{
+                border-radius: 0;
+                border-width: 1px 1px 0;
+                border-style: none;
+                border-color: #3e89c0;
+                height: 29px;
+                line-height: .8em;
+                transition: .3s ease;
+                background-color: #62b5e5;
+                text-decoration: none;
+                font: 11pt Arial #fff;
+                line-height: 29px;
+                }
+                .subnav--active{
+                color: #fff;
+                background-color: #49c5b1;
+                border: 1px solid #3e89c0;
+                border-bottom-color: transparent;
+                text-decoration: none;
+                font: 11pt Arial;
+                cursor: default;
+                line-height: 29px;
+                height: 29px;
+                }
+                .account-name{
+                color: #F30617;
+                font-size: 16px;
+                font-weight: 700;
+                font-family: Arial;
+                margin-top:10px;
+                margin-bottom:13px;
+                }
+                .export-link{
+                color:#969696;
+                font-size: .8em ;
+                font-weight:100;
+                font-family: Arial;
+                float:right;
+                transition: .3s ease;
+                padding: 4px 4px;
+                }
+                .tab-active{
+                background: #6B6C6E;
+                color: #fff;
+                border: 1px solid #4b4b4b;
+                display: inline-block;
+                margin-bottom: 0;
+                text-align: center;
+                vertical-align: middle;
+                cursor: pointer;
+                border: 1px solid transparent;
+                white-space: nowrap;
+                padding: 4px 12px;
+                font-size: 14px;
+                line-height: 1.42857;
+                border-radius: 4px;
+                float:right;
+                
+                }
+                .btn-active{
+                background: #6B6C6E;
+                color: #fff;
+                border: 1px solid #4b4b4b;
+                display: inline-block;
+                margin-bottom: 0;
+                font-weight: 400;
+                text-align: center;
+                vertical-align: middle;
+                cursor: pointer;
+                border: 1px solid transparent;
+                white-space: nowrap;
+                padding: 4px 12px;
+                font-size: 14px;
+                line-height: 1.42857;
+                border-radius: 4px;
+                margin-right:3px;
+                }
+                .btn-inactive{
+                background: #A8A8A8 ;
+                color: #fff;
+                border: none;
+                display: inline-block;
+                margin-bottom: 0;
+                font-weight: 400;
+                text-align: center;
+                vertical-align: middle;
+                white-space: nowrap;
+                padding: 4px 12px;
+                font-size: 14px;
+                line-height: 1.42857;
+                border-radius: 4px;
+                margin-right:3px;
+                
+                }        
+            </style>
+        </head>    
+        
+        <body>    
+            
+            <div class="slds" style="padding-left:65px; padding-right:15px;width:90%;" >
+                <div class="slds-text-heading--medium" style="color:red;font-weight:bold;font-family:Arial;"> 
+                    Stakeholder Interviews and Insights Capture
+                </div>    
+                
+                <apex:form >
+                    <apex:outputPanel id="displaysub">
+                        <div class="slds-button-group" role="group" style="background-color:#4D5656;padding-left: 10px; border:none;">
+                            <button class="{!IF(showAccountHome,'mainnav-active','mainnav')}">
+                                <apex:commandLink style="text-decoration:none;color:#fff;" action="{!goaccountHome}">Home</apex:commandLink>
+                                
+                            </button>
+                            <button class="{!IF(showStakeholderProfiles,'mainnav-active','mainnav')}">
+                                <apex:commandLink style="text-decoration:none;color:#fff;"  action="{!goStakeholderProfiles}" reRender="displaysub">Stakeholder Profiles</apex:commandLink>
+                            </button> 
+                        </div>
+                        
+                        
+                        <apex:outputPanel id="accountHome" rendered="{!showAccountHome}">
+                            <div class="account-name">
+                                {!Account.JJhcs_number__c} : {!UPPER(Account.Name)} 
+                                <a href="#" class="export-link">
+                                    <span class="slds-icon__container">
+                                        <img class="slds-icon slds-icon-standard-utilty slds-icon--x-small" 
+                                             src="/resource/OptimizerRunReportIcon"/>&nbsp;Export All Insights
+                                    </span>
+                                </a>
+                                <a href="#" class="export-link">
+                                    <span class="slds-icon__container">
+                                        <img class="slds-icon slds-icon-standard-utilty slds-icon--x-small" 
+                                             src="/resource/OptimizerRunReportIcon"/>&nbsp;Export Insight Summary
+                                    </span>
+                                </a>
+                                <button id="summarybutton" class="btn-active" style="float:right;" >
+                                    <apex:commandLink style="text-decoration:none;color:#fff;font-size:13px;" action="{!goInsightSummary}" reRender="displaysub" >Insight Summary</apex:commandLink>
+                                </button>
+                                
+                            </div>    
+                            
+                            <div class="slds-button-group" role="group" style="background-color:#62b5e5;width:80%;margin-top:15px;">
+                                <button class="subnav--active" ><apex:outputLink style="text-decoration:none;color:#fff;" >Stakeholder Interviews </apex:outputLink></button>
+                                <button class="subnav"><apex:outputLink style="text-decoration:none;color:#fff;" >Account Activities</apex:outputLink></button>
+                                <button class="subnav"><apex:outputLink style="text-decoration:none;color:#fff;" >Account Attachments</apex:outputLink></button>
+                            </div>        
+                            <div style="border:1px solid #B0B0B0 ;height:500px;width:100%;">
+                              
+                                <div style="float:right;margin-right:10px;margin-top:10px;text-decoration:none;color:#fff;">
+                                    <button id="updateBtn" class="btn-inactive" disabled="true" >Update Insights</button>
+                                    <button id="addBtn" class="btn-active" >Add</button>
+                                    <button id="viewBtn" class="btn-inactive" disabled="true" >View</button>
+                                    <button id="editBtn" class="btn-inactive" disabled="true" >Edit</button>
+                                    <button id="deleteBtn" class="btn-inactive"  disabled="true">Delete</button>
+                                </div><br/>
+                                <div class="slds-text-heading--small" style="padding-left:10px;font-weight:bold" >
+                                    Stakeholder Interviews
+                                </div>
+                                
+                                
+                                <div class="slds-p-vertical--medium">
+                                    <div class="slds-scrollable--x">
+                                        <table class="slds-table slds-table--bordered" id="data">
+                                            <thead>
+                                                <tr style="height:10px;line-height:10px;">
+                                                    <th scope="col" style="background-color:#6B6C6E;color:#fff;border-right: 1px solid #fff;">Interview Title</th>
+                                                    <th scope="col" style="background-color:#6B6C6E;color:#fff;border-right: 1px solid #fff;">Interview Date</th>
+                                                    <th scopt="col" style="background-color:#6B6C6E;color:#fff;border-right: 1px solid #fff;">Last Insights Updated</th>
+                                                    <th scopt="col" style="background-color:#6B6C6E;color:#fff;border-right: 1px solid #fff;">Stakeholder Type</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                <apex:repeat value="{!interviewList}" var="i">    
+					                                <tr>
+                                                        <th scope="row">{!i.Name}</th>
+                                                        <td><apex:outputField value="{!i.cDate__c}"/></td>
+                                                        <td><apex:outputField value="{!i.Last_Updated__c}"/></td>
+                                                        <td>{!i.Profile_Type__c}</td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table> 
+                                    </div>      
+                                </div>                                
+                            </div>            
+                            
+                            
+                            
+                        </apex:outputPanel>   
+                        <apex:outputPanel id="stakeholderProfile" rendered="{!showStakeholderProfiles}">
+                               <apex:iframe src="/apex/SAMGeneralInfo" height="500px" scrolling="true"  />
+                               </apex:outputPanel>
+  						<div style="margin-top:10px;">
+                        <apex:outputPanel id="insightSummary" rendered="{!showInsightSummary}" >
+                             <apex:iframe src="/apex/ConsolidateNotes1?id={!accountId}" height="500px" scrolling="true" />
+                       </apex:outputPanel>         
+                        </div>
+                        <!-- div  role="dialog" id="myModal" class="slds-modal slds-modal--large slds-backdrop slds-backdrop--open">
+                                    <div class="slds-modal__container">
+                                      <div class="slds-modal__header">
+                                        <h2 class="slds-text-heading--medium">Modal Header</h2>
+                                        <button class="slds-button slds-button--icon-inverse slds-modal__close">
+                                       
+                                        </button>
+                                      </div>
+                                      <div class="slds-modal__content">
+                                        <div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                                                
+                                
+  									<div id="summary" class=""></div -->
+                                
+                                
+         					
+                            
+                            
+                        
+                      
+                    </apex:outputPanel>
+                </apex:form>  
+            </div>        
+            
+            
+            
+            
+        </body>
+    </html>
+</apex:page>

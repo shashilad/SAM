@@ -1,0 +1,2 @@
+<apex:page standardController="AccountQItem__c" extensions="QuestionNewOverride_Controller" action="{!addRectype}" >
+</apex:page>

@@ -1,0 +1,145 @@
+<apex:page standardStylesheets="true" 
+            showHeader="true"  
+            sidebar="false"
+            id="Page" 
+            standardController="Account"
+            > 
+<html>
+
+    <head>
+
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="{!$Resource.JsStep1}"></script> 
+        <script src="{!$Resource.JsStep2}"></script>
+        <apex:stylesheet value="{!$Resource.JsStepsCSS}"/>
+        <apex:stylesheet value="{!$Resource.JsStepsCSSMain}"/>
+        <apex:stylesheet value="{!$Resource.JsStepsCSSNorm}"/>
+        <apex:stylesheet value="/dCSS/Theme2/en/common.css"/>
+        <apex:stylesheet value="{!URLFOR($Resource.Custom_Style,'CustomStyling.css')}"/>
+
+
+        <script>
+
+            var j$ = jQuery.noConflict();
+            j$(document).ready(function() {
+            j$("#accountDetails-tabs").steps({
+                headerTag: "h1",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                enableFinishButton: false,
+                enablePagination: false,
+                enableAllSteps: true,
+                titleTemplate: "#title#",
+                cssClass: "tabcontrol"
+            });
+            });
+            
+        </script>
+        
+         
+    </head>
+
+
+
+    <body>
+            <div>
+                <social:profileViewer entityId="{!Account.id}"/>
+            </div>   <br/> <br/> <br/>  <br/>
+            <div> 
+            <chatter:feedWithFollowers entityID="{!$User.Id}" />
+            </div>
+            <div id="accountDetails-tabs"><br/>
+      
+        <!--    Account : <b><h5 style="color:#D65930;">{!UPPER(Account.Name)}</h5></b -->
+        
+                <h1>Account Details</h1>
+                <section>
+                    <p>
+                        <div class="detailBody" >
+                            <apex:pageBlock title="Account Details" >
+                                <apex:pageBlockSection columns="2" dir="LTR">
+                                    <apex:outputField value="{!Account.Name}" /> 
+                                    <apex:outputField value="{!Account.AccountType__c}" />
+                                    <apex:outputField value="{!Account.JJHCS_Sys_Number__c}" /> 
+                                    <apex:outputField value="{!Account.Phone}" />
+                                </apex:pageBlockSection>
+                                <br/>
+                                <apex:pageBlockSection columns="1" >
+                                    <apex:outputField value="{!Account.Parent.Name}" label="Parent Account"/><br/>
+                                    <apex:outputField value="{!Account.BillingStreet}" />
+                                    <apex:outputField value="{!Account.BillingCity}" />
+                                    <apex:outputField value="{!Account.BillingState}" />
+                                    <apex:outputField value="{!Account.BillingPostalCode}" />
+                                </apex:pageBlockSection>
+                            </apex:pageBlock>
+                        </div>                  
+                    </p>
+                </section>
+        
+
+                <h1>Stakeholder Interviews</h1>
+                <section>
+                    <p>
+                        <div class="detailBody" >
+                            <apex:relatedList list="Stakeholder_Interviews__r" pageSize="8" />
+                        </div>
+                    </p>
+                </section>
+
+
+                <h1>Contacts</h1>
+                <section>
+                    <p>
+                        <div class="detailBody">
+                            <apex:relatedList list="Contacts"/>
+                        </div>
+                    </p>
+                </section>
+        
+        
+                <h1>Alignments</h1>
+                <section>
+                    <p>
+                        <div class="detailBody">
+                            <apex:outputPanel rendered="{!Account.recordtype.Name=='System Account'}">
+                                  <apex:include pageName="AlignmentListForSystem"/>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!Account.recordtype.Name=='Teradata Account'}">
+                                <apex:relatedList list="Account_Alignments__r" pagesize="12" />
+                            </apex:outputPanel>
+                        </div>
+                    </p>
+                </section>
+
+
+                <h1>Activities</h1>
+                <section>
+                    <p>
+                        <div class="detailBody">
+                            <apex:relatedList list="OpenActivities" />
+                            <apex:relatedList list="ActivityHistories" />
+                        </div>
+                    </p>
+                </section>
+
+
+                <h1>Attachments</h1>
+                <section>
+                    <p>
+                        <div class="detailBody" >
+                            <apex:relatedList list="CombinedAttachments" />
+                        </div>
+                    </p>
+                </section>
+
+
+            </div>
+
+        </body>
+
+    </html>
+
+</apex:page>

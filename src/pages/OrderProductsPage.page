@@ -1,0 +1,5 @@
+<apex:page standardController="Order" >
+
+<apex:detail relatedList="false" /> 
+<apex:relatedList list="OrderItems" title="Order Products" subject="{!Order}" />
+</apex:page>

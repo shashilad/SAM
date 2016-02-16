@@ -1,0 +1,18 @@
+<apex:page controller="LegalReport_Controller"  sidebar="false">
+<apex:form >
+  <apex:pageBlock title="Enter keyword to search" >
+    <apex:inputText value="{!searchStr}" required="true"/> <br/><br/>
+    <apex:actionFunction name="refresh" action="{!refreshOne}"/>
+    <apex:commandLink value="Export from Accounts/Contacts/Opportunities/Leads/Objectives" 
+    				  	action="/apex/LegalReportXLS?srcText={!searchStr}" oncomplete="refresh();"   /><br/><br/>
+    <apex:commandLink rendered="{!accReportId !=null}" value="Account Activities" 
+    					action="/{!accReportId}?pv0={!searchStr}&pv1={!searchStr}&export=1&enc=UTF-8&xf=xls"  oncomplete="refresh();"  /><br/><br/>
+    <apex:commandLink rendered="{!conReportId !=null}" value="Contact Activities" 
+    					action="/{!conReportId}?pv0={!searchStr}&pv1={!searchStr}&export=1&enc=UTF-8&xf=xls"  oncomplete="refresh();"  /><br/><br/>
+    <apex:commandLink rendered="{!oppReportId !=null}" value="Opportunity Activities" 
+    					action="/{!oppReportId}?pv0={!searchStr}&pv1={!searchStr}&export=1&enc=UTF-8&xf=xls" oncomplete="refresh();" /><br/><br/>
+    <apex:commandLink rendered="{!leadReportId !=null}" value="Lead Activities" 
+    					action="/{!leadReportId}?pv0={!searchStr}&pv1={!searchStr}&export=1&enc=UTF-8&xf=xls" oncomplete="refresh();" /><br/><br/>
+   </apex:pageBlock>  
+  </apex:form>
+</apex:page>

@@ -1,0 +1,24 @@
+<apex:page standardcontroller="Account" extensions="AlignmentListForSystem_Controller"  tabStyle="Account" >
+<apex:form >
+    <apex:pageBlock title="List of Alignments" >
+       <apex:pageBlockButtons rendered="{!$Profile.Name !='SAM Group'}" >
+           <apex:commandButton value="Back to System" action="/{!accId}"/>
+       </apex:pageBlockButtons>
+       <div style="overflow:auto;height:500px;">
+        <apex:repeat value="{!accAlgnList}" var="accAlgn">
+            <apex:pageBlockSection title="{!accAlgn}" columns="1">
+                <apex:pageBlockTable value="{!accAlgnList[accAlgn]}" var="al" >
+                    <apex:column value="{!al.Name}"/>
+                    <apex:column value="{!al.ALGN_STRUC_NM__c}"/>
+                    <apex:column value="{!al.REP_NM__c}"/>
+                    <apex:column value="{!al.DIV_NM__c }"/>
+                    <apex:column value="{!al.DIV_MGR_NM__c}"/>
+                    <apex:column value="{!al.REG_NM__c}"/>
+                    <apex:column value="{!al.REG_MGR_NM__c}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:repeat>  
+      </div>  
+    </apex:pageBlock>
+</apex:form>    
+</apex:page>

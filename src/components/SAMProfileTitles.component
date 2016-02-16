@@ -1,0 +1,165 @@
+<apex:component >
+     <apex:attribute name="profileName" 
+     		description="This is the value for the profile name"
+        	type="String" 
+        	required="true"/>
+  
+
+  <div style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; font-weight:bold; padding-bottom:5px;">
+            Potential Other Titles 
+        </div> 
+       
+
+     <apex:pageBlockSection columns="1"  collapsible="false">
+     		<div>
+		        <table>
+		        	<tr>
+		     			<td>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamACO}">
+		     			    	<ul>
+				     				<li>ACO Administrator </li>
+				     				<li>Medical Director ACO </li>
+				     				<li>ACO VP </li>
+			    	 				<li>ACO Director</li>
+		    	 				</ul> 
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamMedDir}">
+		     			    	<ul>
+			     			   		<li>Chief Medical Officer </li>
+			     			   		<li>Surgical Medical Director </li>
+			     			   		<li>Medical Director </li>
+			     			   		<li>VP Medical Affairs </li>
+			     			   		<li>Chief Clinical Officer </li>
+			     			   		<li>Chief Physician Executive</li>
+		    	 				</ul> 
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamInfControl}">
+		     			    	<ul>
+			     			    	<li>Dir. Infection Prevention/Control </li> 
+			     			       	<li>Infection Prevention/Control Coordinator </li>
+			     			    	<li>Infection Prevention/Control Specialist</li>
+			     			    	<li>Infection Preventionist</li>		    	 				
+			     			    </ul>
+			     			    <br/> 
+			     			    <div>
+			     			    	<h3>Sample Job Description </h3><br/>
+			     			    	<p>The <b>Director of Infection Control</b> directs and coordinates the infection control program in the hospital. 
+			     			    	The designated person will be given the authority to implement and enforce the Surveillance, Prevention and Control Program policies, 
+			     			    	coordinate all infection prevention and control within the hospital and facilitate ongoing monitoring of the effectiveness of prevention
+			     			    	and/or control activities and interventions. Provides assessment and reassessment of occupational and non-occupational injuries and 
+			     			    	illnesses. 
+			     			    	</p>
+			     			    </div><br/>
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamManagedMrkt}">
+		     			    	<ul>
+			     			    	<li>Payer Relations </li> 
+			     			    	<li>Network Administration </li> 
+			     			    	<li>Health Plan Contracting</li>
+		    	 				</ul> 
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamPopHealth}">
+		     			    	<ul>
+			     			    	<li>Chronic Disease Management</li>
+		    	 				</ul> 
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamQuality}">
+		     			    	<ul>
+			     					<li>VP/Dir. of Quality</li> 
+			     					<li>Chief Quality Medical Affairs Officer</li> 
+			     					<li>VP/Dir. of Patient Safety and Medical Affairs</li> 
+									<li>VP/Dir. of Risk Management</li>
+			     			    	<li>Chief/Dir. of Nursing and Quality</li>
+			     			    </ul> 
+			     			    <br/> 
+			     			    <div>
+			     			    	<h3>Sample Job Description </h3><br/>
+			     			    	<p>The Director of Quality and Performance Improvement is accountable and responsible for the ongoing performance 
+                                        improvement, patient satisfaction, and patient safety activities at the Hospital. The Director is responsible
+                                        to direct the overall development, implementation and integration of the Performance Improvement, Quality improvement,
+                                        Infection Control, and Patient Safety Programs. Planning department operations, program priorities, and budgeting,
+                                        as well as maintaining appropriate training, supervision and levels of staffing are specific to the responsibilities 
+                                        of this job. This includes compliance with all JCAHO and regulatory agencies, both Federal and State, reporting requirements.
+ 			     			    	</p>
+			     			    </div><br/>
+			     			    <div>
+			     			    	<h3>Large Hospital System Structure</h3><br/><br/>
+			     			    	<apex:image id="theImage" style="padding-left:60px;" value="{!$Label.SAMQualityImageUrl}" width="80%" height="150"/>
+								</div>
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamNursing}">
+		     			    	<ul>
+		     			    		<li>CNO </li>
+		     			    		<li>VP Nursing</li>   
+		     			    		<li>OR Director </li>
+			     			    	<li>Service Line Coordinator</li> 
+			     			    	<li>Clinical Resource Manager </li>
+			     			    	<li>Clinical Education Manager</li>
+			     			    	<li>OR Business Manager</li>
+									<li>OR Supply Chain Manager</li>
+								</ul>
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamPerioperative}">
+		     			    	<ul>
+			     			    	<li>VP/Executive Dir. Perioperative Services</li>
+			     			    	<li>VP/Executive Director Surgical Services</li>
+			     			    	<li>Administrative Director Perioperative Services</li>
+		    	 				</ul> 
+			     			    <br/> 
+			     			    <div>
+			     			    	<h3>Sample Job Description </h3><br/>
+			     			    	<p> The Executive Director, Perioperative Services Strategic and Operational Leadership for the development of the Perioperative services so that a full
+                                        continuum of services is created and structured in response to customer needs (patient, payer and physician). The Executive Director maintains expertise in 
+                                        program and financial aspects of Perioperative services, including Pre Anesthesia, Pre-Operative, Operating Room, PACU, Sterile Processing, and GI Lab. 
+                                        The Executive Director will guide the development of the overall leadership structure and strategic plan, quality, and create goals and plans for growth for 
+                                        the service line. 
+                                    </p>
+                                    <p> Responsible for the overall administration of Perioperative programs in accordance with accepted national standards, federal and state laws as well as hospital 
+                                        and departmental policies.  Directs and provides oversight for all activities for the Department of Perioperative Services which includes staffing and resource
+                                    	utilization. Develops and implements budgets, policies, planning, technical operations, and equipment acquisition. Participates in monitoring compliance with State 
+                                    	and Federal regulations as well as JCAHO standards.                                    
+                                    </p>
+
+			     			    </div><br/>
+		     			    </apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamSurgeon}">
+		     			    	<ul>
+			     			    	<li>Chief of Surgery </li>
+									<li>CMO</li>
+									<li>Department Chief</li>
+									<li>Academic or Chair</li>
+									<li>Physician Practice President</li>
+									<li>Center of Excellence (KOL) surgeon</li>
+									<li>Community based surgeon</li>
+		    	 				</ul> 
+		     				</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamPatientExp}">
+		     			    	<ul>
+			     			    	<li>Medical Group Executive</li>
+			     			    	<li>Chief Nursing Officer</li>
+			     			    	<li>Chief Medical Officer</li>
+			     			    	<li>VP of Marketing</li>
+			     			    	<li>VP of Business Solutions</li>
+			     			    	<li>VP of Managed Care</li>
+			     			    	<li>Chief Experience Officer</li>
+			     			    	<li>Director/VO of Population Health</li>
+			     			    	<li>Dir/VP of Integration</li>
+			     			    	<li>Accountable Care Officer</li>
+			     			    	<li>PA Officer</li>
+		    	 				</ul> 
+							</apex:outputPanel>
+		     			    <apex:outputPanel rendered="{!profileName == $Label.SamHealthCare}">
+		     			    	<ul>
+			     			    	<li>VP Supply Chain/Director of SC and Business Services </li>
+			     			    	<li>Director of Value Analysis </li>
+			     			    	<li>CFO </li>
+			     			    	<li>COO </li>
+			     			    	<li>Director of Distribution - If central warehouse (CSC,CDC)</li>
+		    	 				</ul> 
+							</apex:outputPanel>
+			   			</td>
+		     		</tr>	
+		     	</table>	
+		     </div>	
+     </apex:pageBlockSection>  
+  </apex:component>

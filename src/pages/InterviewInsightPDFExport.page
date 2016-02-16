@@ -1,0 +1,103 @@
+<apex:page showHeader="false" 
+			sidebar="false"
+			standardController="Stakeholder_Interview__c"
+			extensions="InterviewInsightPDFExport_Controller"
+			renderAs="pdf"
+			recordSetVar="a" 
+			standardStyleSheets="false"
+			applyHtmlTag="false">
+
+	
+	<head>
+		<style>
+	 		table{
+			   	table-layout: fixed;
+			   	width: 100%;
+			   	border:"1px solid black";
+			}
+
+			table td{
+			    word-wrap:break-word;
+			}
+            @page {
+   				@bottom-right {
+       				content: "Page " counter(page) " of " counter(pages);
+			        font-family: sans-serif;
+			        font-size: 80%;
+   				}
+   				@top-right {
+       				content: "Insights for ALL interviews";
+			        font-family: sans-serif;
+			        font-size:100%;
+   				}
+			}
+			td {
+			    border: solid 1px #000;
+			    border-style: solid none;
+			    padding: 5px;
+			    background-color: cyan;
+			}
+			td:first-child {
+			    border-left-style: solid;
+			}
+			td:last-child {
+				    border-right-style: solid;
+			}
+			
+		</style>
+ 	</head>
+ 	<body>
+ 		<div style="font-size:15px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;"> 
+ 				{!jjhcs} - {!acc.Name} 
+ 				<apex:outputPanel style="float:right;"> 
+                    Type : {!sysType}
+            	</apex:outputPanel> 
+ 		</div>
+ 
+ 		<apex:repeat value="{!iiMap}" var="i">
+
+ 			<div style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:15px;padding-left:10px;padding-top:5px; padding-bottom:5px;">
+				{!UPPER(RIGHT(i,LEN(i)-1))}
+ 			</div>
+            
+		    <table style="width:100%;font-family:Arial,Helvetica,sans-serif;font-size:12px;">
+		       <apex:repeat value="{!iiMap[i]}" var="c" >
+		           <tr>
+		                <td style="width:15%;font-size:10px;vertical-align: text-top;"> 
+		                	<table>
+		                		<tr>
+		                			<td style="border-style: none;background:#E8E8E8 ;">
+                                        {!UPPER(c.Stakeholder_Interviews__r.Profile_Type__c)} 
+                                    </td>
+		                		</tr>
+		                		<tr>
+		                			<td style="border-style: none;">
+                                        {!c.Stakeholder_Interviews__r.Name} 
+                                    </td>
+		                		</tr>
+		                		<tr>	
+		                 			<td style="border-style: none;">
+                                        {!c.Stakeholder_Interviews__r.Contact_Name__r.Name}
+                                    </td>
+		                 		</tr>	
+		                 		<tr>	
+		                 			<td style="border-style: none;">
+                                        <apex:outputField value="{!c.Stakeholder_Interviews__r.cDate__c}" />
+                                    </td>
+		                 		</tr>	
+		                 	</table>	
+		                 </td>
+        		        <td style="width:70%;border:1px solid black;vertical-align:text-top;">
+                            <apex:outputText value="{!c.Comments__c}" escape="false"/>
+                       </td>
+		            </tr>    
+
+		      </apex:repeat>
+
+		    </table>
+		</apex:repeat>    
+	</body>
+
+
+
+</apex:page>

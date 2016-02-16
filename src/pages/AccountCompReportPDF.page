@@ -1,0 +1,68 @@
+<apex:page standardController="Account" 
+            extensions="AccountCompReportPDF_Controller" 
+            renderAs="pdf" 
+            standardStylesheets="false" 
+            applyHtmlTag="false" 
+            showHeader="false" >
+            
+ <head>
+  
+        <style type="text/css" media="print">
+                @page {
+                    @bottom-right {
+                        content: "Page " counter(page) " of " counter(pages);
+                        font-family: sans-serif;
+                        font-size: 80%;
+                    }
+                    @top-right {
+                        content: "Insight Summary";
+                        font-family: sans-serif;
+                        font-size:80%;
+                    }
+
+                }
+                td {
+                    border: solid 1px #000;
+                    border-style: solid none;
+                    padding: 10px;
+                    background-color: cyan;
+                }
+                td:first-child {
+                    border-left-style: solid;
+                }
+                td:last-child {
+                    border-right-style: solid;
+                }
+        </style>
+  
+ </head>
+ <body>
+ <div style="font-size:15px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;"> 
+    {!jjhcs} - {!acc.Name} 
+    <apex:outputPanel style="float:right;"> Type : {!sysType}</apex:outputPanel> 
+ </div>
+     
+    <table style="width:100%;font-family:Arial,Helvetica,sans-serif;font-size:12px;" >
+       
+       <apex:repeat value="{!compMap}" var="c">
+       
+            <tr style="background-color:#666666;color:white;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;"> 
+                <td colspan="2">{!IF(TRIM(c) = '.Common', 'Common',c)} &nbsp;Insights</td>
+            </tr>
+          
+            <apex:repeat value="{!compMap[c]}" var="lst" >
+          
+                <tr>
+                    <td style="width:20%;font-weight:bold;vertical-align: text-top;"> {!lst.Category__c}</td>
+                    <td style="width:80%;border:1px solid black;"><apex:outputText value="{!lst.Consolidated_Notes__c}" escape="false"/></td>
+                </tr>
+           
+            </apex:repeat>
+
+      </apex:repeat>
+
+    </table> 
+
+</body>
+ 
+</apex:page>

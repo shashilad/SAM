@@ -1,0 +1,59 @@
+<apex:component selfClosing="true">
+    	<style>			
+				a:hover {background:#ffffff; text-decoration:none;} /*BG color is a must for IE6*/
+				a.tooltip span {display:none; padding:2px 3px; margin-left:8px; width:500px; }	
+				a.tooltip:hover span{display:inline; position:absolute; background: rgb(255,255,255); font-size:9px; border:1px solid #cccccc; color:#6c6c6c;}
+				.profName {font-weight: bold;}
+        </style>
+    
+    
+        <a class="tooltip" >
+                                <img src="/s.gif" alt="" class="infoIcon" title="" /> 
+                            	<span>
+                            	   <table border="1px;" width="100%">
+                            	   		<tr>
+                            	   			<td class="profName">ACO	</td>
+                            	   			<td>Administrator for the ACO</td>
+                            	   		</tr>
+                         	   			<tr>
+                            	   			<td class="profName">Infection Control / Prevention	</td>
+                            	   			<td>Infection Control Department Lead</td>
+                            	   		</tr>
+                			   			<tr>
+                            	   			<td class="profName">Managed Markets / Payer Relations</td>
+                            	   			<td>Negotiates contracts with payers (private, public insurance and direct employer contracts)</td>
+                            	   		</tr>
+                			   			<tr>
+                            	   			<td class="profName">Medical Director</td>
+                            	   			<td>CMO Profile</td>
+                            	   		</tr>
+                			   			<tr>
+                            	   			<td class="profName">Nursing</td>
+                            	   			<td>Charged with ensuring that patient-care, clinical and staffing standards are met.</td>
+                            	   		</tr>
+         			   					<tr>
+                            	   			<td class="profName">Quality</td>
+                            	   			<td>Service Line Lead, CNO/VP of Nursing, CMO, Chief Quality Officer, CEO of physician groups</td>
+                            	   		</tr>
+                   			   			<tr>
+                            	   			<td class="profName">Patient Exp/Satisfaction</td>
+                            	   			<td>Patient Experience and Satisfaction</td>
+                            	   		</tr>
+                   			   			<tr>
+                            	   			<td class="profName">Perioperative Services</td>
+                            	   			<td>Manage Pre-op, OR, and Post Op areas</td>
+                            	   		</tr>
+                     			   		<tr>
+                            	   			<td class="profName">Supply Chain - Healthcare</td>
+                            	   			<td>SC healthcare</td>
+                            	   		</tr>
+                     			   		<tr>
+                            	   			<td class="profName">Surgeon</td>
+                            	   			<td>Surgeons</td>
+                            	   		</tr>
+                           		</table>				
+										
+								</span>
+								</a>
+				
+</apex:component>

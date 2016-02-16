@@ -1,0 +1,16 @@
+<apex:page standardController="Survey__c" extensions="surveyController" sidebar="false" showHeader="false">
+<apex:form >
+<apex:pageBlock title="Survey on Site" >
+<apex:pageblockButtons >
+    <apex:commandButton action="{!dosave}" value="Save"/>
+    <apex:commandButton action="{!Cancel}" value="Cancel"/>
+</apex:pageblockButtons>
+
+<apex:PageBlockSection >
+<apex:inputField value="{!Survey__c.Name}"/>
+<apex:inputField value="{!Survey__c.Satisfaction__c}"/>
+<apex:inputField value="{!Survey__c.Will_buy_again__c}"/>
+</apex:PageBlockSection>  
+</apex:pageBlock>
+</apex:form>
+</apex:page>

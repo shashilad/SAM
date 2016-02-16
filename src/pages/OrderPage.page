@@ -1,0 +1,23 @@
+<apex:page standardController="Account" extensions="OrderPage_Controller">
+
+<apex:detail relatedList="false" showChatter="true"/>
+<apex:relatedList list="OpenActivities" subject="{!Account}"/>
+<apex:relatedList list="CombinedAttachments" subject="{!Account}"/>
+<apex:relatedList list="ActivityHistories" subject="{!Account}"/>
+<apex:relatedList list="Contacts"/>
+
+
+
+<apex:include pageName="AccountPieChart" />
+<apex:form >
+<apex:pageBlock title="Orders">
+ <apex:pageBlockTable value="{!ord}" var="o">
+     <apex:column headerValue="Year" > 
+          <apex:commandLink value="{!o.Year_inText__c}" action="/{!o.id}"  />
+     </apex:column>    
+  </apex:pageBlockTable>
+</apex:pageBlock>
+</apex:form>
+
+<apex:relatedList list="Objectives__r" subject="{!Account}"/>
+</apex:page>
